@@ -86,15 +86,15 @@ Submitted via ASHIRA Website
 
   if (isSubmitted) {
     return (
-      <section className="min-h-screen flex items-center justify-center pt-20 px-6">
-        <div className="max-w-lg w-full text-center">
+      <section className="min-h-screen flex items-center justify-center pt-20 px-6 bg-[#F5F5F5]">
+        <div className="max-w-lg w-full text-center text-black">
           <div className="w-20 h-20 mx-auto mb-6 bg-[#D4AF37]/20 rounded-full flex items-center justify-center">
             <CheckCircle className="w-10 h-10 text-[#D4AF37]" />
           </div>
           
-          <h2 className="font-serif text-3xl text-foreground mb-4">Application Submitted!</h2>
+          <h2 className="font-serif text-3xl text-black mb-4">Application Submitted!</h2>
           
-          <p className="text-muted-foreground mb-8">
+          <p className="text-gray-700 mb-8">
             Thank you for your interest in joining ASHIRA&apos;s marketing team. 
             Our team will review your application and contact you soon.
           </p>
@@ -120,7 +120,7 @@ Submitted via ASHIRA Website
   }
 
   return (
-    <section className="min-h-screen pt-24 pb-16 px-6">
+    <section className="min-h-screen pt-24 pb-16 px-6 bg-[#F5F5F5]">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -132,10 +132,10 @@ Submitted via ASHIRA Website
             <div className="h-px w-12" style={{ backgroundColor: '#D4AF37' }} />
           </div>
 
-          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-4">
+          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-black mb-4">
             Join Our Marketing Team
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-gray-700 max-w-2xl mx-auto">
             Become a part of ASHIRA GROUP and earn while helping organizations get premium custom apparel.
           </p>
         </div>
@@ -143,7 +143,7 @@ Submitted via ASHIRA Website
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Benefits */}
           <div>
-            <h2 className="font-serif text-2xl text-foreground mb-8">Why Join Us?</h2>
+            <h2 className="font-serif text-2xl text-black mb-8">Why Join Us?</h2>
             
             <div className="space-y-6">
               {benefits.map((benefit, index) => (
@@ -152,16 +152,16 @@ Submitted via ASHIRA Website
                     <benefit.icon className="w-6 h-6 text-[#D4AF37]" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-foreground mb-1">{benefit.title}</h3>
-                    <p className="text-muted-foreground text-sm">{benefit.description}</p>
+                    <h3 className="font-medium text-black mb-1">{benefit.title}</h3>
+                    <p className="text-gray-700 text-sm">{benefit.description}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Testimonial */}
-            <div className="mt-10 p-6 bg-[#1c2143] rounded-lg">
-              <p className="text-white/80 italic mb-4">
+            <div className="mt-10 p-6 bg-gray-50 border border-gray-200 rounded-lg">
+              <p className="text-gray-700 italic mb-4">
                 &ldquo;Joining ASHIRA as a marketer has been a great opportunity. The support from the team 
                 is excellent and the commission structure is very fair.&rdquo;
               </p>
@@ -170,12 +170,12 @@ Submitted via ASHIRA Website
           </div>
 
           {/* Form */}
-          <div className="bg-card border border-border rounded-lg p-6 md:p-8">
-            <h2 className="font-serif text-xl text-foreground mb-6">Application Form</h2>
+          <div className="bg-[#F5F5F5] border border-gray-200 rounded-lg p-6 md:p-8">
+            <h2 className="font-serif text-xl text-black mb-6">Application Form</h2>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="text-sm text-muted-foreground mb-2 block">Full Name *</label>
+                <label className="text-sm text-gray-700 mb-2 block">Full Name *</label>
                 <Input
                   name="name"
                   value={formData.name}
@@ -186,7 +186,7 @@ Submitted via ASHIRA Website
               </div>
 
               <div>
-                <label className="text-sm text-muted-foreground mb-2 block">Phone (WhatsApp) *</label>
+                <label className="text-sm text-gray-700 mb-2 block">Phone (WhatsApp) *</label>
                 <Input
                   name="phone"
                   value={formData.phone}
@@ -197,7 +197,7 @@ Submitted via ASHIRA Website
               </div>
 
               <div>
-                <label className="text-sm text-muted-foreground mb-2 block">City *</label>
+                <label className="text-sm text-gray-700 mb-2 block">City *</label>
                 <Input
                   name="city"
                   value={formData.city}
@@ -208,7 +208,7 @@ Submitted via ASHIRA Website
               </div>
 
               <div>
-                <label className="text-sm text-muted-foreground mb-2 block">Experience</label>
+                <label className="text-sm text-gray-700 mb-2 block">Experience</label>
                 <Textarea
                   name="experience"
                   value={formData.experience}
@@ -219,7 +219,7 @@ Submitted via ASHIRA Website
               </div>
 
               <div>
-                <label className="text-sm text-muted-foreground mb-2 block">Social Media Link</label>
+                <label className="text-sm text-gray-700 mb-2 block">Social Media Link</label>
                 <Input
                   name="socialMedia"
                   value={formData.socialMedia}
@@ -232,7 +232,7 @@ Submitted via ASHIRA Website
                 type="submit"
                 disabled={isLoading}
                 className="w-full rounded-full py-6"
-                style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
+                style={{ backgroundColor: '#D4AF37', color: '#000000' }}
               >
                 {isLoading ? (
                   "Submitting..."
@@ -244,7 +244,7 @@ Submitted via ASHIRA Website
                 )}
               </Button>
 
-              <p className="text-xs text-muted-foreground text-center">
+              <p className="text-xs text-gray-500 text-center">
                 Your application will be sent to ashira.hmco@gmail.com
               </p>
             </form>

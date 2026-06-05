@@ -88,7 +88,7 @@ export function PortfolioContent() {
   return (
     <div className="pt-24 pb-16">
       {/* Hero */}
-      <section className="py-16 bg-[#1c2143]">
+      <section className="py-16 bg-[#0a192f] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white mb-4">
             Our Portfolio
@@ -102,7 +102,7 @@ export function PortfolioContent() {
             asChild
             size="lg"
             className="rounded-full px-8"
-            style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
+            style={{ backgroundColor: '#D4AF37', color: '#0a192f' }}
           >
             <a href="/CP.pdf" download>
               <Download className="mr-2 w-5 h-5" />
@@ -113,7 +113,7 @@ export function PortfolioContent() {
       </section>
 
       {/* Client Logo Carousel */}
-      <section className="py-12 border-b border-border">
+      <section className="py-12 border-b border-white/10 bg-[#0a192f]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-center text-sm text-muted-foreground mb-6">
             Trusted by Leading Organizations
@@ -128,13 +128,13 @@ export function PortfolioContent() {
               {[...pastClients, ...pastClients].map((client, index) => (
                 <div
                   key={index}
-                  className="group flex items-center justify-center px-6 py-3 bg-secondary border border-border hover:border-[#D4AF37]/50 transition-all min-w-[140px] grayscale hover:grayscale-0"
+                  className="group flex items-center justify-center px-6 py-3 bg-white border border-gray-200 hover:border-[#D4AF37]/50 transition-all min-w-[140px] grayscale hover:grayscale-0"
                 >
                   <div className="text-center">
-                    <p className="text-xl font-serif text-muted-foreground group-hover:text-foreground transition-colors">
+                    <p className="text-xl font-serif text-gray-900 group-hover:text-gray-900 transition-colors">
                       {client.short}
                     </p>
-                    <p className="text-xs text-muted-foreground/60 mt-1">
+                    <p className="text-xs text-gray-600 mt-1">
                       {client.name}
                     </p>
                   </div>
@@ -146,7 +146,7 @@ export function PortfolioContent() {
       </section>
 
       {/* Projects */}
-      <section className="py-16">
+      <section className="py-16 bg-[#0a192f]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <h2 className="font-serif text-2xl md:text-3xl text-foreground text-center mb-8">
             Featured Projects
@@ -160,8 +160,8 @@ export function PortfolioContent() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`px-4 py-2 text-sm rounded-full transition-colors ${
                   activeCategory === cat.id
-                    ? 'bg-[#1c2143] text-white'
-                    : 'bg-secondary text-muted-foreground hover:text-foreground'
+                    ? 'bg-[#0a192f] text-white'
+                    : 'bg-[#0d2137] text-white/60 hover:text-white'
                 }`}
               >
                 {cat.label}
@@ -176,7 +176,7 @@ export function PortfolioContent() {
               return (
                 <div
                   key={project.id}
-                  className="group bg-card border border-border hover:border-[#D4AF37]/50 transition-all p-6"
+                  className="group bg-[#0d2137] border border-white/10 hover:border-[#D4AF37]/50 transition-all p-6"
                 >
                   <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4">
                     <Icon className="w-6 h-6 text-[#D4AF37]" />
@@ -203,7 +203,7 @@ export function PortfolioContent() {
       </section>
 
       {/* Customer Reviews */}
-      <section className="py-16 bg-secondary">
+      <section className="py-16 bg-[#0d2137]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <h2 className="font-serif text-2xl md:text-3xl text-foreground text-center mb-10">
             Customer Reviews
@@ -213,7 +213,7 @@ export function PortfolioContent() {
             {reviews.map((review, index) => (
               <div
                 key={index}
-                className="bg-card border border-border p-6"
+                className="bg-[#0d2137] border border-white/10 p-6"
               >
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: review.rating }).map((_, i) => (
@@ -234,7 +234,7 @@ export function PortfolioContent() {
       </section>
 
       {/* CTA */}
-      <section className="py-16">
+      <section className="py-16 bg-[#0a192f]">
         <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-4">
             Ready to Start Your Project?
@@ -247,7 +247,7 @@ export function PortfolioContent() {
               asChild
               size="lg"
               className="rounded-full px-8"
-              style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
+              style={{ backgroundColor: '#D4AF37', color: '#0a192f' }}
             >
               <Link href="/order">
                 Start Your Order
@@ -258,7 +258,7 @@ export function PortfolioContent() {
               asChild
               variant="outline"
               size="lg"
-              className="rounded-full px-8"
+              className="rounded-full px-8 bg-white text-black hover:bg-gray-100"
             >
               <Link href="/join-marketer">
                 Join Our Partnership
