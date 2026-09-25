@@ -1,6 +1,4 @@
-import { Header } from "@/components/header"
-import { HeroSection } from "@/components/hero-section"
-import { TrustBar } from "@/components/trust-bar"
+import { HeroContainer } from "@/components/landing/hero/HeroContainer"
 import { AboutSection } from "@/components/about-section"
 import { ProductsSection } from "@/components/products-section"
 import { HoldingCards } from "@/components/holding-cards"
@@ -11,10 +9,8 @@ import { FloatingIcons } from "@/components/floating-icons"
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
-      <Header />
-      <HeroSection />
-      <TrustBar />
+    <main className="min-h-screen bg-[#FFFFFF]">
+      <HeroContainer />
       <AboutSection />
       <HoldingCards />
       <ProductsSection />

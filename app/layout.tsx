@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Playfair_Display } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans, Outfit, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import Chatbot from "@/components/Chatbot"
@@ -9,6 +9,17 @@ import { AuthProvider } from "@/contexts/auth-context"
 const inter = Inter({ 
   subsets: ["latin"],
   variable: '--font-inter'
+});
+
+const plusJakarta = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  variable: '--font-plus-jakarta',
+  weight: ['400', '500', '600', '700', '800']
+});
+
+const outfit = Outfit({ 
+  subsets: ["latin"],
+  variable: '--font-outfit'
 });
 
 const playfair = Playfair_Display({ 
@@ -46,7 +57,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${plusJakarta.variable} ${outfit.variable} ${playfair.variable} font-sans antialiased bg-white`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

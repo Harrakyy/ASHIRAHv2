@@ -138,26 +138,29 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Top bar with company name */}
+      {/* Top bar with company name - using new palette Gradient #243469 to #5A5F8E with #F0F0EA */}
       <div 
-        className="hidden md:block py-2 text-center text-xs tracking-wider"
-        style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
+        className="hidden md:block py-2 text-center text-xs tracking-wider border-b border-[#5A5F8E]/30 shadow-sm"
+        style={{ 
+          background: 'linear-gradient(90deg, #1C2143 0%, #243469 35%, #5A5F8E 70%, #243469 100%)', 
+          color: '#F0F0EA' 
+        }}
       >
-        <span className="font-medium">ASHIRA GROUP</span>
-        <span className="mx-2">|</span>
-        <span>PT ASHIRA NIAGA INDONESIA</span>
+        <span className="font-semibold text-white tracking-widest">ASHIRA GROUP</span>
+        <span className="mx-2 text-white/40">|</span>
+        <span className="text-[#F0F0EA]/90">PT ASHIRA NIAGA INDONESIA</span>
       </div>
 
       {/* Main header */}
       <div
         className={`transition-all duration-300 ${
           isScrolled
-            ? "backdrop-blur-md border-b shadow-sm"
+            ? "backdrop-blur-md border-b shadow-md"
             : ""
         }`}
         style={{ 
-          backgroundColor: isScrolled ? 'rgba(28, 33, 67, 0.97)' : '#1c2143',
-          borderColor: isScrolled ? 'rgba(212, 175, 55, 0.2)' : 'transparent'
+          backgroundColor: isScrolled ? 'rgba(28, 33, 67, 0.95)' : '#1C2143',
+          borderColor: isScrolled ? 'rgba(90, 95, 142, 0.35)' : 'transparent'
         }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -173,9 +176,9 @@ export function Header() {
                   priority
                 />
               </div>
-              <div className="hidden sm:block border-l border-white/20 pl-4">
-                <p className="text-white text-xs font-medium tracking-wide">ASHIRA GROUP</p>
-                <p className="text-white/60 text-[10px] tracking-wide">PT ASHIRA NIAGA INDONESIA</p>
+              <div className="hidden sm:block border-l border-[#5A5F8E]/40 pl-4">
+                <p className="text-white text-xs font-semibold tracking-wide">ASHIRA GROUP</p>
+                <p className="text-[#F0F0EA]/70 text-[10px] tracking-wide">PT ASHIRA NIAGA INDONESIA</p>
               </div>
             </Link>
 
@@ -190,18 +193,18 @@ export function Header() {
                 >
                   {item.submenu ? (
                     <>
-                      <button className="flex items-center gap-1 text-sm font-medium transition-colors tracking-wide text-white/80 hover:text-white">
+                      <button className="flex items-center gap-1 text-sm font-medium transition-colors tracking-wide text-white/80 hover:text-[#B396C8]">
                         {item.label}
                         <ChevronDown className="w-4 h-4" />
                       </button>
                       {openDropdown === item.label && (
                         <div className="absolute top-full left-0 pt-2">
-                          <div className="bg-[#1c2143] border border-[#D4AF37]/20 shadow-lg py-2 min-w-[200px]">
+                          <div className="bg-[#1C2143] border border-[#5A5F8E]/40 shadow-xl py-2 min-w-[200px] rounded-xl backdrop-blur-xl">
                             {item.submenu.map((sub) => (
                               <Link
                                 key={sub.href}
                                 href={sub.href}
-                                className="block px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                                className="block px-4 py-2 text-sm text-[#F0F0EA]/80 hover:text-white hover:bg-[#223268]/50 transition-colors"
                               >
                                 {sub.label}
                               </Link>
@@ -213,7 +216,7 @@ export function Header() {
                   ) : (
                     <Link
                       href={item.href}
-                      className="text-sm font-medium transition-colors tracking-wide text-white/80 hover:text-white"
+                      className="text-sm font-medium transition-colors tracking-wide text-white/80 hover:text-[#B396C8]"
                     >
                       {item.label}
                     </Link>
@@ -231,21 +234,21 @@ export function Header() {
                 onMouseLeave={() => setLangMenuOpen(false)}
               >
                 <button className="flex items-center gap-2 px-3 py-2 text-sm text-white/80 hover:text-white transition-colors">
-                  <Globe className="w-4 h-4" />
-                  <span className="uppercase text-xs font-medium">{language}</span>
+                  <Globe className="w-4 h-4 text-[#B396C8]" />
+                  <span className="uppercase text-xs font-semibold">{language}</span>
                 </button>
                 {langMenuOpen && (
                   <div className="absolute top-full right-0 pt-2">
-                    <div className="bg-[#1c2143] border border-[#D4AF37]/20 shadow-lg py-1 min-w-[120px]">
+                    <div className="bg-[#1C2143] border border-[#5A5F8E]/40 shadow-xl py-1 min-w-[120px] rounded-xl backdrop-blur-xl">
                       <button
                         onClick={() => { setLanguage("en"); setLangMenuOpen(false); }}
-                        className={`w-full text-left px-4 py-2 text-sm transition-colors ${language === "en" ? "text-[#D4AF37]" : "text-white/70 hover:text-white hover:bg-white/5"}`}
+                        className={`w-full text-left px-4 py-2 text-sm transition-colors ${language === "en" ? "text-[#B396C8] font-bold" : "text-[#F0F0EA]/70 hover:text-white hover:bg-[#223268]/40"}`}
                       >
                         English
                       </button>
                       <button
                         onClick={() => { setLanguage("id"); setLangMenuOpen(false); }}
-                        className={`w-full text-left px-4 py-2 text-sm transition-colors ${language === "id" ? "text-[#D4AF37]" : "text-white/70 hover:text-white hover:bg-white/5"}`}
+                        className={`w-full text-left px-4 py-2 text-sm transition-colors ${language === "id" ? "text-[#B396C8] font-bold" : "text-[#F0F0EA]/70 hover:text-white hover:bg-[#223268]/40"}`}
                       >
                         Indonesia
                       </button>
@@ -258,8 +261,8 @@ export function Header() {
                 asChild
                 variant="outline"
                 size="sm"
-                className="rounded-full px-4"
-                style={{ backgroundColor: 'transparent', color: '#ffffff', borderColor: 'rgba(255,255,255,0.5)' }}
+                className="rounded-full px-4 border-[#5A5F8E]/60 text-white hover:bg-[#223268]/40 hover:border-[#B396C8] transition-all"
+                style={{ backgroundColor: 'transparent' }}
               >
                 <Link href="/order">{t("orderNow")}</Link>
               </Button>
@@ -267,9 +270,11 @@ export function Header() {
               <Button
                 asChild
                 size="sm"
-                variant="outline"
-                className="rounded-full px-4"
-                style={{ backgroundColor: 'transparent', color: '#ffffff', borderColor: 'rgba(255,255,255,0.5)' }}
+                className="rounded-full px-4 text-white font-medium shadow-md transition-all hover:scale-105"
+                style={{ 
+                  background: 'linear-gradient(135deg, #243469 0%, #485888 50%, #5A5F8E 100%)',
+                  border: '1px solid rgba(179, 150, 200, 0.4)'
+                }}
               >
                 <a href="https://wa.me/6285819993633" target="_blank" rel="noopener noreferrer">
                   WhatsApp
@@ -281,8 +286,11 @@ export function Header() {
                   <Button
                     asChild
                     size="sm"
-                    className="rounded-full px-4 hover:opacity-90 transition-opacity"
-                    style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
+                    className="rounded-full px-4 hover:opacity-90 transition-opacity text-white"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #243469 0%, #5A5F8E 100%)',
+                      border: '1px solid rgba(179, 150, 200, 0.3)'
+                    }}
                   >
                     <Link href="/dashboard">
                       <User className="w-4 h-4 mr-1" />
@@ -305,7 +313,7 @@ export function Header() {
                   size="sm"
                   variant="ghost"
                   className="rounded-full w-9 h-9 p-0"
-                  style={{ color: '#ffffff', border: '1px solid rgba(255,255,255,0.5)' }}
+                  style={{ color: '#ffffff', border: '1px solid rgba(90, 95, 142, 0.5)' }}
                   aria-label="Login"
                 >
                   <Link href="/login">
@@ -331,18 +339,18 @@ export function Header() {
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="lg:hidden py-6 border-t border-white/10" style={{ backgroundColor: '#1c2143' }}>
+            <div className="lg:hidden py-6 border-t border-[#5A5F8E]/30" style={{ backgroundColor: '#1C2143' }}>
               {/* Mobile Language Switcher */}
-              <div className="flex items-center justify-center gap-4 pb-4 mb-4 border-b border-white/10">
+              <div className="flex items-center justify-center gap-4 pb-4 mb-4 border-b border-[#5A5F8E]/20">
                 <button
                   onClick={() => setLanguage("en")}
-                  className={`px-4 py-2 text-sm rounded-full transition-colors ${language === "en" ? "bg-[#D4AF37] text-[#1c2143]" : "text-white/70 border border-white/20"}`}
+                  className={`px-4 py-2 text-sm rounded-full transition-colors ${language === "en" ? "bg-gradient-to-r from-[#243469] to-[#5A5F8E] text-white font-bold border border-[#B396C8]/40" : "text-white/70 border border-white/20"}`}
                 >
                   English
                 </button>
                 <button
                   onClick={() => setLanguage("id")}
-                  className={`px-4 py-2 text-sm rounded-full transition-colors ${language === "id" ? "bg-[#D4AF37] text-[#1c2143]" : "text-white/70 border border-white/20"}`}
+                  className={`px-4 py-2 text-sm rounded-full transition-colors ${language === "id" ? "bg-gradient-to-r from-[#243469] to-[#5A5F8E] text-white font-bold border border-[#B396C8]/40" : "text-white/70 border border-white/20"}`}
                 >
                   Indonesia
                 </button>
@@ -353,7 +361,7 @@ export function Header() {
                   <div key={item.label}>
                     {item.submenu ? (
                       <div>
-                        <p className="text-sm font-medium text-white py-2 px-2">
+                        <p className="text-sm font-semibold text-white py-2 px-2">
                           {item.label}
                         </p>
                         <div className="pl-4">
@@ -361,7 +369,7 @@ export function Header() {
                             <Link
                               key={sub.href}
                               href={sub.href}
-                              className="block text-sm text-white/70 hover:text-white py-2 px-2"
+                              className="block text-sm text-[#F0F0EA]/70 hover:text-white py-2 px-2"
                               onClick={() => setIsMobileMenuOpen(false)}
                             >
                               {sub.label}
@@ -372,7 +380,7 @@ export function Header() {
                     ) : (
                       <Link
                         href={item.href}
-                        className="block text-sm font-medium text-white/80 hover:text-white py-2 px-2"
+                        className="block text-sm font-medium text-white/80 hover:text-[#B396C8] py-2 px-2"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         {item.label}
@@ -380,11 +388,11 @@ export function Header() {
                     )}
                   </div>
                 ))}
-                <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-white/10">
+                <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-[#5A5F8E]/20">
                   <Button
                     asChild
                     variant="outline"
-                    className="rounded-full border-white/30 text-white hover:bg-white/10"
+                    className="rounded-full border-[#5A5F8E]/50 text-white hover:bg-white/10"
                   >
                     <Link href="/order">
                       {t("orderNow")}
@@ -393,8 +401,8 @@ export function Header() {
 
                   <Button
                     asChild
-                    className="rounded-full"
-                    style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
+                    className="rounded-full text-white font-semibold shadow"
+                    style={{ background: 'linear-gradient(135deg, #243469 0%, #5A5F8E 100%)' }}
                   >
                     <a
                       href="https://wa.me/6285819993633"
@@ -410,8 +418,8 @@ export function Header() {
                     <>
                       <Button
                         asChild
-                        className="rounded-full"
-                        style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
+                        className="rounded-full text-white"
+                        style={{ background: 'linear-gradient(135deg, #243469 0%, #5A5F8E 100%)' }}
                       >
                         <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
                           <User className="w-4 h-4 mr-1" />

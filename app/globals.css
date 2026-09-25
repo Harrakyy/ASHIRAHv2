@@ -1,9 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
+
+@theme {
+  --font-sans: 'Inter', var(--font-inter), sans-serif;
+  --font-display: 'Plus Jakarta Sans', var(--font-plus-jakarta), sans-serif;
+  --color-navy: #0F1B3D;
+  --color-green: #16A34A;
+  --color-green-bg: #F0FDF4;
+  --color-slate: #64748B;
+  --color-border: #E2E8F0;
+}
+
+body {
+  background-color: #FFFFFF;
+}
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --navy: #0F1B3D;
+  --green: #16A34A;
+  --green-bg: #F0FDF4;
+  --slate: #64748B;
+  --border: #E2E8F0;
+  --white: #FFFFFF;
+  --accent-green: #16A34A;
+  --slate-500: #64748B;
   --background: oklch(0.99 0 0);
   --foreground: oklch(0.18 0.02 260);
   --card: oklch(1 0 0);
