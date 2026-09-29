@@ -48,6 +48,8 @@ function useAdminBadges() {
   }
 
   useEffect(() => {
+    // Fetch badge saat mount, lalu diperbarui lewat realtime subscription di bawah
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchBadges()
 
     const channel = supabase

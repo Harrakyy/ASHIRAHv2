@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -29,7 +29,6 @@ const filterOptions = [
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
-  const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("all")
 
@@ -38,7 +37,6 @@ export default function AdminOrdersPage() {
       try {
         const data = await getOrders()
         setOrders(data as Order[])
-        setFilteredOrders(data as Order[])
       } catch (error) {
         console.error("Error loading orders:", error)
       } finally {
@@ -48,13 +46,10 @@ export default function AdminOrdersPage() {
     loadOrders()
   }, [])
 
-  useEffect(() => {
-    if (activeFilter === "all") {
-      setFilteredOrders(orders)
-    } else {
-      setFilteredOrders(orders.filter(o => o.status === activeFilter))
-    }
-  }, [activeFilter, orders])
+  const filteredOrders = useMemo(
+    () => (activeFilter === "all" ? orders : orders.filter((o) => o.status === activeFilter)),
+    [activeFilter, orders],
+  )
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-950 min-h-screen">

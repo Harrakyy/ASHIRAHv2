@@ -1,3 +1,4 @@
+import { asCaughtError } from "@/lib/utils"
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 
@@ -88,7 +89,8 @@ export async function POST(request: Request) {
         )
     }
     
-  } catch (error: any) {
+  } catch (err) {
+    const error = asCaughtError(err)
     console.error('Webhook error:', error)
     return NextResponse.json(
       { error: error.message }, 

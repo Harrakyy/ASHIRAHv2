@@ -4,26 +4,24 @@ import { ApparelProducts } from "@/components/apparel/apparel-products"
 import { FabricShowcase } from "@/components/apparel/fabric-showcase"
 import { ApparelCTA } from "@/components/apparel/apparel-cta"
 import { CustomerReviews } from "@/components/apparel/customer-reviews"
-import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { FloatingIcons } from "@/components/floating-icons"
 
 export const metadata: Metadata = {
-  title: "ASHIRA'H.CO | Premium Custom Apparel",
-  description: "Customable Premium Apparel with Negotiable Price. Jersey, T-Shirt, Varsity, Work Jacket, dan lainnya. Konveksi Premium Jakarta, Custom Varsity Jacket Indonesia.",
+  title: "ASHIRA Apparel | Produksi Garmen & Apparel Custom",
+  description: "ASHIRA Apparel (PT Ashira Swarna Apparel) — produksi garmen dan apparel custom: jersey, t-shirt, varsity, work jacket, almamater, polo & kemeja. Harga bisa dinegosiasi.",
 }
 
 export default function ApparelPage() {
   return (
-    <main className="min-h-screen bg-[#0a0d1a]">
-      <Header />
+    <main className="ashira-page-gradient min-h-screen">
       <ApparelHero />
-      <ApparelProducts />
-      <FabricShowcase />
-      <CustomerReviews />
-      <ApparelCTA />
+      <div className="ashira-grid-pattern">
+        <ApparelProducts />
+        <FabricShowcase />
+        <CustomerReviews />
+        <ApparelCTA />
+      </div>
       <Footer />
-      <FloatingIcons />
     </main>
   )
 }

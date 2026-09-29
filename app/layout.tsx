@@ -28,13 +28,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'ASHIRA GROUP | Premium Custom Apparel Solutions',
-  description: 'PT. ASHIRA NIAGA INDONESIA - Premium quality custom apparel vendor specializing in jerseys, t-shirts, varsity jackets, work jackets, and corporate uniforms. Trusted partner for organizations and businesses.',
-  generator: 'v0.app',
+  title: 'ASHIRA Group | Holding Company Teknologi & Fashion',
+  description: 'ASHIRA Group (PT Ashira Niaga Indonesia) adalah holding company yang membawahi ASHIRATECH — software, SaaS & AI — dan ASHIRA Apparel — produksi garmen dan apparel custom.',
   icons: {
     icon: [
       {
-        url: '/iconAH-32x32.png',
+        url: '/iconAH.png',
         media: '(prefers-color-scheme: light)',
       },
       {
@@ -46,7 +45,7 @@ export const metadata: Metadata = {
         type: 'image/svg+xml',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/iconAH.png',
   },
 }
 
@@ -56,7 +55,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body className={`${inter.variable} ${plusJakarta.variable} ${outfit.variable} ${playfair.variable} font-sans antialiased bg-white`}>
         <ThemeProvider
           attribute="class"

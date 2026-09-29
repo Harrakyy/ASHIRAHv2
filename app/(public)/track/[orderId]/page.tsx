@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import { WHATSAPP_URL } from "@/data/hero-slides"
 import { useAuth } from "@/contexts/auth-context"
 import {
   getOrderByOrderNumber,
@@ -17,6 +18,16 @@ import {
   type Order,
   type OrderUpdate,
 } from "@/lib/supabase/queries"
+
+/** Header halaman lacak pesanan — berada di bawah navbar tetap (fixed). */
+function TrackHeader() {
+  return (
+    <header className="ashira-dark-gradient px-6 pb-8 pt-28 text-center text-white lg:pt-32">
+      <p className="text-sm text-white/70">ASHIRA Group</p>
+      <h1 className="ashira-silver-text mt-1 text-2xl font-bold sm:text-3xl">Lacak Pesanan</h1>
+    </header>
+  )
+}
 
 const steps: Array<Order["status"]> = ["pending", "in_progress", "review", "completed"]
 
@@ -115,12 +126,7 @@ export default function TrackPage({ params }: { params: Promise<{ orderId: strin
   if (authLoading || isLoading) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        <header className="py-6 text-center border-b border-border">
-          <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
-            Ashira.co.
-          </Link>
-          <p className="text-sm text-muted-foreground mt-1">Lacak Pesanan</p>
-        </header>
+        <TrackHeader />
         <main className="flex-1 flex items-center justify-center px-6">
           <p className="text-sm text-muted-foreground">Memuat…</p>
         </main>
@@ -131,21 +137,26 @@ export default function TrackPage({ params }: { params: Promise<{ orderId: strin
   if (!user) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        <header className="py-6 text-center border-b border-border">
-          <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
-            Ashira.co.
-          </Link>
-          <p className="text-sm text-muted-foreground mt-1">Lacak Pesanan</p>
-        </header>
+        <TrackHeader />
         <main className="flex-1 flex items-center justify-center px-6">
           <div className="text-center max-w-sm">
-            <h1 className="text-xl font-bold text-foreground mb-2">Login diperlukan</h1>
+            <h2 className="text-xl font-bold text-foreground mb-2">Login diperlukan</h2>
             <p className="text-muted-foreground mb-6">
               Silakan login untuk melihat progress pesananmu.
             </p>
-            <Button asChild className="bg-foreground text-background hover:bg-foreground/90 rounded-full">
-              <Link href="/login">Login</Link>
-            </Button>
+            <div className="flex flex-col items-center gap-3">
+              <Button asChild className="ashira-dark-gradient rounded-full px-6 text-white">
+                <Link href="/login">Login</Link>
+              </Button>
+              <a
+                href={`${WHATSAPP_URL}?text=${encodeURIComponent(`Halo ASHIRA, saya ingin cek status pesanan ${orderId}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold text-ashira-blue hover:underline"
+              >
+                Belum punya akun? Cek status via WhatsApp
+              </a>
+            </div>
           </div>
         </main>
       </div>
@@ -156,19 +167,14 @@ export default function TrackPage({ params }: { params: Promise<{ orderId: strin
   if (!order) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        <header className="py-6 text-center border-b border-border">
-          <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
-            Ashira.co.
-          </Link>
-          <p className="text-sm text-muted-foreground mt-1">Lacak Pesanan</p>
-        </header>
+        <TrackHeader />
 
         <main className="flex-1 flex items-center justify-center px-6">
           <div className="text-center max-w-sm">
             <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-muted flex items-center justify-center">
               <Search className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h1 className="text-xl font-bold text-foreground mb-2">Pesanan Tidak Ditemukan</h1>
+            <h2 className="text-xl font-bold text-foreground mb-2">Pesanan Tidak Ditemukan</h2>
             <p className="text-muted-foreground mb-6">
               Periksa kembali ID pesanan kamu atau hubungi kami untuk bantuan.
             </p>
@@ -183,13 +189,7 @@ export default function TrackPage({ params }: { params: Promise<{ orderId: strin
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="py-6 text-center border-b border-border">
-        <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
-          Ashira.co.
-        </Link>
-        <p className="text-sm text-muted-foreground mt-1">Lacak Pesanan</p>
-      </header>
+      <TrackHeader />
 
       <main className="max-w-lg mx-auto px-6 py-12">
         {/* Order Summary Card */}

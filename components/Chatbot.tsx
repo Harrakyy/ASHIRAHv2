@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, ArrowUp } from "lucide-react";
+import { WHATSAPP_URL } from "@/data/hero-slides";
 
 type Message = {
   role: "user" | "assistant";
@@ -22,16 +23,11 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({
     nama: "", email: "", whatsapp: "", produk: "", jumlah: ""
   });
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,7 +45,7 @@ export default function Chatbot() {
 
     try {
       const messagesForApi = newMessages.filter(
-        (m) => m.content !== "__DEAL_CONFIRMED__" && m.content !== "__DEAL_REJECTED__" && m.content !== "__DETAIL_FORM__"
+        (m) => !["__DEAL_CONFIRMED__", "__DEAL_REJECTED__", "__DETAIL_FORM__", "__AI_ERROR__"].includes(m.content)
       );
       const res = await fetch('/api/chat', {
         method: "POST",
@@ -57,6 +53,7 @@ export default function Chatbot() {
         body: JSON.stringify({ messages: messagesForApi }),
       });
       const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || "AI tidak tersedia");
       const nextMessages: Message[] = [
         ...newMessages,
         { role: "assistant", content: data.message, timestamp: new Date() },
@@ -91,7 +88,7 @@ export default function Chatbot() {
     } catch {
       setMessages([
         ...newMessages,
-        { role: "assistant", content: "Maaf, terjadi error.", timestamp: new Date() },
+        { role: "assistant", content: "__AI_ERROR__", timestamp: new Date() },
       ]);
     } finally {
       setLoading(false);
@@ -140,8 +137,9 @@ export default function Chatbot() {
       {/* Floating button */}
       <button
         onClick={handleToggle}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
-        style={mounted && !open ? { animation: "scaleIn 0.3s ease-out" } : undefined}
+        aria-label={open ? "Tutup chat" : "Buka chat asisten ASHIRA"}
+        className="fixed bottom-4 right-4 z-50 w-12 h-12 sm:bottom-6 sm:right-6 sm:w-14 sm:h-14 rounded-full bg-ashira-royal hover:bg-ashira-deep text-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
+        style={!open ? { animation: "scaleIn 0.3s ease-out" } : undefined}
       >
         {open ? (
           <X className="w-6 h-6" />
@@ -159,14 +157,14 @@ export default function Chatbot() {
 
       {/* Chat window */}
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-96 max-sm:w-[calc(100vw-2rem)] h-[500px] shadow-2xl rounded-2xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
+        <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 w-96 max-sm:w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100dvh-7rem)] shadow-2xl rounded-2xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-700 to-blue-900 text-white px-4 py-3 flex items-center gap-2.5">
+          <div className="bg-gradient-to-r from-ashira-royal to-ashira-ink text-white px-4 py-3 flex items-center gap-2.5">
             <div className="relative flex-shrink-0">
               <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
               <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-green-400 animate-ping opacity-75" />
             </div>
-            <span className="font-medium text-sm">Ashira Assistant</span>
+            <span className="font-medium text-sm">ASHIRA Assistant</span>
             <span className="ml-auto inline-flex items-center rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-semibold text-white">
               AI
             </span>
@@ -181,7 +179,7 @@ export default function Chatbot() {
               <div className="flex flex-col items-center justify-center h-full text-center px-4">
                 <span className="text-5xl mb-4">👋</span>
                 <p className="font-semibold text-gray-800 dark:text-gray-100 text-base">
-                  Halo! Saya Tim Ashira.co
+                  Halo! Saya asisten ASHIRA
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-5">
                   Ada yang bisa saya bantu hari ini?
@@ -191,7 +189,7 @@ export default function Chatbot() {
                     <button
                       key={reply}
                       onClick={() => sendMessage(reply)}
-                      className="px-4 py-2 text-sm font-medium rounded-full border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-300 transition dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800"
+                      className="px-4 py-2 text-sm font-medium rounded-full border border-ashira-royal/25 bg-[#EEF0FA] text-ashira-royal hover:bg-[#E2E5F6] hover:border-ashira-royal/40 transition dark:bg-ashira-royal/30 dark:text-ashira-lilac dark:border-ashira-royal/60"
                     >
                       {reply}
                     </button>
@@ -204,8 +202,8 @@ export default function Chatbot() {
               if (msg.content === "__DETAIL_FORM__") {
                 return (
                   <div key={i} className="flex justify-start">
-                    <div className="bg-white border-2 border-blue-200 rounded-xl p-4 max-w-sm shadow-sm">
-                      <p className="font-semibold text-blue-800 mb-1">📋 Detail Pesanan</p>
+                    <div className="bg-white border-2 border-ashira-royal/25 rounded-xl p-4 max-w-sm shadow-sm">
+                      <p className="font-semibold text-ashira-navy mb-1">📋 Detail Pesanan</p>
                       <p className="text-xs text-gray-500 mb-3">Data produk sudah terisi otomatis. Lengkapi data diri kamu 😊</p>
                       <div className="space-y-2">
                         <div>
@@ -213,7 +211,7 @@ export default function Chatbot() {
                           <input type="text" placeholder="Nama lengkap"
                             value={formData.nama}
                             onChange={e => setFormData(p => ({...p, nama: e.target.value}))}
-                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-ashira-royal"
                           />
                         </div>
                         <div>
@@ -221,7 +219,7 @@ export default function Chatbot() {
                           <input type="email" placeholder="email@contoh.com"
                             value={formData.email}
                             onChange={e => setFormData(p => ({...p, email: e.target.value}))}
-                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-ashira-royal"
                           />
                         </div>
                         <div>
@@ -229,7 +227,7 @@ export default function Chatbot() {
                           <input type="tel" placeholder="08xxxxxxxxxx"
                             value={formData.whatsapp}
                             onChange={e => setFormData(p => ({...p, whatsapp: e.target.value}))}
-                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-ashira-royal"
                           />
                         </div>
                         <div>
@@ -237,7 +235,7 @@ export default function Chatbot() {
                           <input type="text" placeholder="Produk yang dipesan"
                             value={formData.produk}
                             onChange={e => setFormData(p => ({...p, produk: e.target.value}))}
-                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-ashira-royal"
                           />
                         </div>
                         <div>
@@ -245,16 +243,38 @@ export default function Chatbot() {
                           <input type="number" placeholder="Minimum 12 pcs"
                             value={formData.jumlah}
                             onChange={e => setFormData(p => ({...p, jumlah: e.target.value}))}
-                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                            className="w-full mt-1 px-3 py-2 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-ashira-royal"
                           />
                         </div>
                       </div>
                       <button
                         onClick={handleFormSubmit}
-                        className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-colors"
+                        className="w-full mt-3 bg-ashira-royal hover:bg-ashira-deep text-white text-sm font-medium py-2 rounded-lg transition-colors"
                       >
                         Lanjutkan →
                       </button>
+                    </div>
+                  </div>
+                );
+              }
+
+              if (msg.content === "__AI_ERROR__") {
+                // AI gagal (mis. API key belum di-set / timeout) → arahkan ke WhatsApp agar pengunjung tidak buntu
+                const lastUser = messages.slice(0, i).filter((m) => m.role === "user").slice(-1)[0]?.content ?? "";
+                const waText = `Halo ASHIRA, saya ingin bertanya: ${lastUser.startsWith("FORM_DATA:") ? lastUser.slice(10).trim() : lastUser}`;
+                return (
+                  <div key={i} className="flex justify-start">
+                    <div className="bg-white border border-gray-200 rounded-xl p-4 max-w-[85%] shadow-sm">
+                      <p className="font-semibold text-gray-800">Asisten AI sedang tidak tersedia</p>
+                      <p className="text-sm text-gray-600 mt-1">Tim kami siap membantu langsung lewat WhatsApp.</p>
+                      <a
+                        href={`${WHATSAPP_URL}?text=${encodeURIComponent(waText)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#1C2143] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B2996] transition-colors"
+                      >
+                        <MessageCircle className="w-4 h-4" /> Lanjut via WhatsApp
+                      </a>
                     </div>
                   </div>
                 );
@@ -277,7 +297,7 @@ export default function Chatbot() {
                 return (
                   <div key={i} className="flex justify-start">
                     <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 max-w-[80%]">
-                      <p className="font-semibold text-gray-800">Terima kasih sudah menghubungi Ashira.co!</p>
+                      <p className="font-semibold text-gray-800">Terima kasih sudah menghubungi ASHIRA!</p>
                       <p className="text-sm text-gray-600 mt-1">
                         Jika berubah pikiran, kami siap membantu 😊
                       </p>
@@ -294,7 +314,7 @@ export default function Chatbot() {
                   }`}
                 >
                   {msg.role === "assistant" && (
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0 shadow-sm">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-ashira-royal to-ashira-deep flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0 shadow-sm">
                       A
                     </div>
                   )}
@@ -302,7 +322,7 @@ export default function Chatbot() {
                     <div
                        className={`text-sm leading-relaxed px-3.5 py-2.5 whitespace-pre-wrap ${
                          msg.role === "user"
-                           ? "bg-blue-600 text-white rounded-2xl rounded-br-sm"
+                           ? "bg-ashira-royal text-white rounded-2xl rounded-br-sm"
                            : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm rounded-2xl rounded-bl-sm"
                        }`}
                     >
@@ -322,7 +342,7 @@ export default function Chatbot() {
 
             {loading && (
               <div className="flex items-end gap-2 justify-start">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0 shadow-sm">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-ashira-royal to-ashira-deep flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0 shadow-sm">
                   A
                 </div>
                 <div className="bg-white dark:bg-gray-800 shadow-sm rounded-2xl rounded-bl-sm px-4 py-3.5 flex gap-1.5">
@@ -346,12 +366,12 @@ export default function Chatbot() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Ketik pesan..."
-                className="flex-1 text-sm border border-gray-200 dark:border-gray-600 rounded-full px-4 py-2 outline-none focus:border-blue-400 transition bg-transparent dark:text-gray-100 placeholder:text-gray-400"
+                className="flex-1 text-sm border border-gray-200 dark:border-gray-600 rounded-full px-4 py-2 outline-none focus:border-ashira-royal transition bg-transparent dark:text-gray-100 placeholder:text-gray-400"
               />
               <button
                 onClick={() => sendMessage()}
                 disabled={loading || !input.trim()}
-                className="rounded-full bg-blue-600 hover:bg-blue-700 p-2 text-white disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="rounded-full bg-ashira-royal hover:bg-ashira-deep p-2 text-white disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 <ArrowUp className="w-4 h-4" />
               </button>

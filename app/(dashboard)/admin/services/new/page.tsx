@@ -1,5 +1,7 @@
 "use client"
 
+import { asCaughtError } from "@/lib/utils"
+
 import * as React from "react"
 import { useState } from "react"
 import Link from "next/link"
@@ -41,7 +43,7 @@ export default function NewServicePage() {
   })
   const [isSaving, setIsSaving] = useState(false)
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: string | number | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
@@ -57,7 +59,8 @@ export default function NewServicePage() {
       await createService(formData as Omit<Service, 'id' | 'created_at' | 'current_slots'>)
       toast.success("Layanan berhasil ditambahkan!")
       window.location.href = '/admin/services'
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error creating service:", error)
       toast.error(error.message || "Gagal menambahkan layanan")
     } finally {

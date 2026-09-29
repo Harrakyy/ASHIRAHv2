@@ -1,3 +1,4 @@
+import { asCaughtError } from "@/lib/utils"
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
@@ -43,7 +44,8 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, n8nStatus: n8nResponse.status })
-  } catch (error: any) {
+  } catch (err) {
+    const error = asCaughtError(err)
     console.error('=== NOTIFY FETCH ERROR ===')
     console.error('Message:', error?.message)
     console.error('Code:', error?.code)

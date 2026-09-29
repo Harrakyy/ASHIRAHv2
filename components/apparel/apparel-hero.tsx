@@ -1,118 +1,92 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ArrowRight } from "lucide-react"
+
+const highlights = [
+  { title: "Gratis", caption: "Sampel desain" },
+  { title: "Cepat", caption: "Waktu produksi" },
+  { title: "Nasional", caption: "Kirim ke seluruh Indonesia" },
+]
 
 export function ApparelHero() {
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#0a0d1a]">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(192,192,192,0.3) 1px, transparent 0)`,
-            backgroundSize: "50px 50px",
-          }}
-        />
-      </div>
+    <section className="px-3 pb-8 pt-[92px] sm:px-6 lg:px-8 lg:pt-[112px]">
+      <div className="ashira-dark-gradient relative mx-auto max-w-[1376px] overflow-hidden rounded-[32px] shadow-[0_20px_48px_rgba(10,18,51,0.25)] lg:rounded-[44px]">
+        <div className="grid items-center gap-10 p-6 sm:p-10 lg:grid-cols-2 lg:gap-12 xl:p-14">
+          {/* Konten */}
+          <div className="flex flex-col items-start">
+            <Image src="/images/logo.png" alt="ASHIRA'H — ASHIRA Apparel" width={180} height={63} className="h-auto w-[150px] object-contain sm:w-[180px]" />
 
-      {/* Silver gradient accents */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#C0C0C0]/5 to-transparent" />
-      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-[#1c2143]/50 to-transparent" />
+            <span className="mt-6 rounded-full border border-white/55 px-4 py-2 text-[13px] font-medium text-white sm:text-sm">
+              PT Ashira Swarna Apparel — Premium Quality
+            </span>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Content */}
-          <div>
-            {/* Logo */}
-            <div className="mb-8">
-              <Image
-                src="/images/logo.png"
-                alt="ASHIRA'H.CO"
-                width={200}
-                height={70}
-                className="object-contain"
-              />
-            </div>
-
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#C0C0C0]/10 border border-[#C0C0C0]/20 mb-6">
-              <Star className="w-4 h-4 text-[#C0C0C0]" />
-              <span className="text-[#C0C0C0] text-sm font-medium tracking-wider">
-                PREMIUM QUALITY
-              </span>
-            </div>
-
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
-              Customable Premium{" "}
-              <span className="text-[#C0C0C0]">Apparel</span>
+            <h1 className="ashira-silver-text mt-6 text-[36px] font-bold leading-[1.08] tracking-[-0.02em] sm:text-[48px] xl:text-[56px]">
+              Apparel Custom Premium
             </h1>
 
-            <p className="text-lg text-white/60 mb-4 leading-relaxed max-w-xl">
-              High-quality custom clothing solutions for organizations, universities, and corporates.
+            <p className="mt-5 max-w-[520px] text-base leading-[1.6] text-[#D9D9D9] sm:text-lg">
+              Solusi pakaian custom berkualitas tinggi untuk organisasi, kampus, dan perusahaan.
             </p>
 
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-px bg-[#D4AF37]" />
-              <p className="text-[#D4AF37] font-medium">
-                Negotiable Price & Exclusive Bonus
-              </p>
+            <p className="mt-4 flex items-center gap-3 font-medium text-ashira-lilac">
+              <span className="h-px w-8 bg-ashira-lilac" aria-hidden />
+              Harga bisa nego &amp; bonus eksklusif
+            </p>
+
+            <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+              <Link
+                href="/order"
+                className="ashira-silver-gradient inline-flex items-center justify-center gap-2.5 rounded-full px-[26px] py-3.5 text-[15px] font-semibold text-ashira-navy shadow-[0_8px_24px_rgba(4,3,13,0.3)] transition-transform hover:scale-[1.02] sm:text-base"
+              >
+                Minta Penawaran <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href="#products"
+                className="inline-flex items-center justify-center rounded-full border border-white/50 px-[26px] py-3.5 text-[15px] font-medium text-white transition-colors hover:border-white hover:bg-white/10 sm:text-base"
+              >
+                Lihat Produk
+              </a>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="rounded-full px-8 py-6 text-base font-medium transition-all hover:scale-105"
-                style={{ backgroundColor: '#C0C0C0', color: '#0a0d1a' }}
-              >
-                <Link href="/order">
-                  Request Quote
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="rounded-full px-8 py-6 text-base font-medium border-white/20 text-white hover:bg-white/10 transition-all hover:scale-105"
-                style={{ backgroundColor: '#ffffff', color: '#1c2143' }}
-              >
-                <a href="#products">View Products</a>
-              </Button>
-            </div>
-
-            {/* Features */}
-            <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/10">
-              <div className="text-center">
-                <p className="text-2xl font-serif text-[#C0C0C0] mb-1">Free</p>
-                <p className="text-xs text-white/50">Sample Design</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-serif text-[#C0C0C0] mb-1">Fast</p>
-                <p className="text-xs text-white/50">Production Time</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-serif text-[#C0C0C0] mb-1">Nationwide</p>
-                <p className="text-xs text-white/50">Shipping Available</p>
-              </div>
-            </div>
+            <dl className="mt-10 grid w-full grid-cols-3 gap-4 border-t border-white/15 pt-6">
+              {highlights.map((h) => (
+                <div key={h.title}>
+                  <dt className="text-lg font-bold text-white sm:text-2xl">{h.title}</dt>
+                  <dd className="mt-0.5 text-xs text-white/60 sm:text-sm">{h.caption}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
-          {/* Visual Element */}
-          <div className="relative hidden lg:block">
-            <div className="aspect-square bg-gradient-to-br from-[#1c2143] to-[#0a0d1a] border border-[#C0C0C0]/20 flex items-center justify-center">
-              <div className="text-center p-12">
-                <p className="text-6xl font-serif text-[#C0C0C0]/20 mb-4">A&apos;H</p>
-                <p className="text-sm text-white/30 tracking-[0.3em] uppercase">
-                  Premium Apparel
-                </p>
-              </div>
+          {/* Visual produk */}
+          <div className="ashira-stage relative h-[340px] overflow-hidden rounded-[28px] sm:h-[460px] lg:h-[560px] lg:rounded-[36px]">
+            <div
+              aria-hidden
+              className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0)_70%)]"
+            />
+            <div className="absolute inset-y-[10%] left-[8%] w-[46%]">
+              <Image
+                src="/images/hero/tshirt-back.webp"
+                alt="Tampak belakang kaos custom ASHIRA Apparel"
+                fill
+                sizes="(min-width: 1024px) 280px, 45vw"
+                className="object-contain opacity-90 drop-shadow-[0_18px_24px_rgba(10,18,51,0.16)]"
+              />
             </div>
-            {/* Decorative border */}
-            <div className="absolute -bottom-4 -right-4 w-full h-full border border-[#C0C0C0]/10 -z-10" />
+            <div className="absolute inset-y-[6%] right-[6%] w-[54%]">
+              <Image
+                src="/images/hero/tshirt-front.webp"
+                alt="Tampak depan kaos custom ASHIRA Apparel"
+                fill
+                priority
+                sizes="(min-width: 1024px) 320px, 50vw"
+                className="object-contain drop-shadow-[0_22px_28px_rgba(10,18,51,0.22)]"
+              />
+            </div>
+            <span className="absolute bottom-5 left-5 rounded-full bg-white px-3.5 py-1.5 text-[12px] font-semibold text-ashira-navy shadow-[0_4px_12px_rgba(10,18,51,0.12)] sm:bottom-6 sm:left-6 sm:text-[13px]">
+              Jersey · T-Shirt · Varsity · Work Jacket
+            </span>
           </div>
         </div>
       </div>

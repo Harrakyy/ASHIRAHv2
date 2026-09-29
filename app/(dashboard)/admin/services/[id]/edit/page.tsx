@@ -1,5 +1,7 @@
 "use client"
 
+import { asCaughtError } from "@/lib/utils"
+
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
@@ -59,7 +61,7 @@ export default function EditServicePage() {
           max_slots: data.max_slots || 5,
           current_slots: data.current_slots || 0,
           is_active: data.is_active ?? true,
-          kategori: (data as any).kategori || "Website",
+          kategori: ("kategori" in data && typeof data.kategori === "string" ? data.kategori : "") || "Website",
         })
       } catch (error) {
         console.error("Error loading service:", error)
@@ -71,7 +73,7 @@ export default function EditServicePage() {
     if (serviceId) loadService()
   }, [serviceId])
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: string | number | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
@@ -87,7 +89,8 @@ export default function EditServicePage() {
       await updateService(serviceId, formData)
       toast.success("Layanan berhasil diperbarui!")
       window.location.href = '/admin/services'
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error updating service:", error)
       toast.error(error.message || "Gagal memperbarui layanan")
     } finally {

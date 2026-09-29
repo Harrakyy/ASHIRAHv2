@@ -1,3 +1,4 @@
+import { asCaughtError } from "@/lib/utils"
 import { NextResponse } from 'next/server'
 
 export const maxDuration = 30
@@ -203,7 +204,8 @@ export async function POST(request: Request) {
       dealData,
     })
 
-  } catch (error: any) {
+  } catch (err) {
+    const error = asCaughtError(err)
     console.error('Negotiate API error:', error)
     return NextResponse.json(
       { message: 'Maaf, terjadi kesalahan. Coba lagi.' },

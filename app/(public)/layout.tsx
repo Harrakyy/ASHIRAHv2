@@ -1,4 +1,5 @@
 import { Header } from "@/components/header"
+import { OrderModalProvider } from "@/components/order-modal"
 
 export default function PublicLayout({
   children,
@@ -6,9 +7,9 @@ export default function PublicLayout({
   children: React.ReactNode
 }) {
   return (
-    <>
+    <OrderModalProvider>
       <Header />
       {children}
-    </>
+    </OrderModalProvider>
   )
 }

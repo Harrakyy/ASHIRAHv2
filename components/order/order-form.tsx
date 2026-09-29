@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import { Upload, CheckCircle, Send, ArrowRight } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { Upload, CheckCircle, Send, ArrowRight, Loader2, MessageCircle } from "lucide-react"
+import { WHATSAPP_URL } from "@/data/hero-slides"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -28,6 +28,23 @@ interface OrderFormData {
   ai_session_id?: string
 }
 
+const card =
+  "rounded-[28px] border border-white bg-white/90 p-6 shadow-[0_12px_32px_rgba(10,18,51,0.1)] md:p-8"
+const field =
+  "h-11 rounded-xl border-ashira-navy/15 bg-white text-ashira-navy placeholder:text-ashira-muted/60 focus-visible:border-ashira-royal focus-visible:ring-ashira-royal/20"
+const label = "mb-2 block text-sm font-medium text-ashira-navy"
+
+function StepTitle({ step, children }: { step: string; children: React.ReactNode }) {
+  return (
+    <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-ashira-navy">
+      <span className="ashira-dark-gradient flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold text-white">
+        {step}
+      </span>
+      {children}
+    </h2>
+  )
+}
+
 export function OrderForm() {
   const [formData, setFormData] = useState<OrderFormData>({
     name: "",
@@ -51,12 +68,22 @@ export function OrderForm() {
   const [isChatLoading, setIsChatLoading] = useState(false)
   const [isDealDone, setIsDealDone] = useState(false)
   const [dealData, setDealData] = useState<Record<string, unknown> | null>(null)
+  /** true bila API negosiasi gagal (mis. API key AI belum di-set) → tampilkan jalur WhatsApp. */
+  const [aiUnavailable, setAiUnavailable] = useState(false)
+  const negotiatorRef = useRef<HTMLDivElement>(null)
+
+  // Bawa panel negosiasi ke layar begitu muncul — sebelumnya muncul di bawah fold tanpa tanda apa pun.
+  useEffect(() => {
+    if (showNegotiator) negotiatorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }, [showNegotiator])
 
   useEffect(() => {
     const stored = localStorage.getItem("ashira_prefill")
     if (stored) {
       try {
         const { nama, email, whatsapp } = JSON.parse(stored)
+        // localStorage hanya ada di browser → prefill harus setelah mount (hindari hydration mismatch)
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFormData(prev => ({
           ...prev,
           name: nama || "",
@@ -76,7 +103,7 @@ export function OrderForm() {
   const handleSizeChange = (size: keyof typeof formData.sizes, value: string) => {
     setFormData(prev => ({
       ...prev,
-      sizes: { ...prev.sizes, [size]: parseInt(value) || 0 }
+      sizes: { ...prev.sizes, [size]: Math.max(0, parseInt(value) || 0) }
     }))
   }
 
@@ -96,6 +123,22 @@ export function OrderForm() {
 
   const totalQuantity = Object.values(formData.sizes).reduce((a, b) => a + b, 0)
 
+  const sizeSummary = Object.entries(formData.sizes)
+    .filter(([, qty]) => qty > 0)
+    .map(([size, qty]) => `${size}: ${qty}`)
+    .join(", ")
+  const waOrderText = [
+    "Halo ASHIRA, saya ingin order custom apparel:",
+    `- Nama: ${formData.name}`,
+    `- Produk: ${formData.orderType}`,
+    `- Jumlah: ${totalQuantity} pcs${sizeSummary ? ` (${sizeSummary})` : ""}`,
+    `- Alamat: ${formData.address}`,
+    formData.notes && `- Catatan: ${formData.notes}`,
+    formData.designFile && `- File desain: ${formData.designFile.name} (akan saya kirim di chat ini)`,
+  ]
+    .filter(Boolean)
+    .join("\n")
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
@@ -107,6 +150,9 @@ export function OrderForm() {
     
     setShowNegotiator(true)
     setIsChatLoading(true)
+    setAiUnavailable(false)
+    setChatMessages([])
+    setIsDealDone(false)
     
     try {
       const orderContext = {
@@ -129,13 +175,13 @@ export function OrderForm() {
       })
       
       const data = await res.json()
+      if (!res.ok) throw new Error(data?.message || 'AI tidak tersedia')
       
       if (data.message) {
         setChatMessages([{ role: 'assistant', content: data.message }])
       }
     } catch (err) {
-      setError('Koneksi gagal, coba lagi.')
-      setShowNegotiator(false)
+      setAiUnavailable(true)
     } finally {
       setIsChatLoading(false)
     }
@@ -173,6 +219,7 @@ export function OrderForm() {
       })
       
       const data = await res.json()
+      if (!res.ok) throw new Error(data?.message || 'AI tidak tersedia')
       
       if (data.message) {
         setChatMessages(prev => [...prev, { role: 'assistant', content: data.message }])
@@ -189,10 +236,7 @@ export function OrderForm() {
       }
       
     } catch (err) {
-      setChatMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'Maaf, terjadi kesalahan koneksi. Coba lagi.' 
-      }])
+      setAiUnavailable(true)
     } finally {
       setIsChatLoading(false)
     }
@@ -237,288 +281,254 @@ export function OrderForm() {
 
   if (isSubmitted) {
     return (
-      <section className="min-h-screen flex items-center justify-center pt-20 px-6">
-        <div className="max-w-lg w-full text-center">
-          <div className="w-20 h-20 mx-auto mb-6 bg-[#D4AF37]/20 rounded-full flex items-center justify-center">
-            <CheckCircle className="w-10 h-10 text-[#D4AF37]" />
+      <section className="flex min-h-screen items-center justify-center px-6 pb-16 pt-28">
+        <div className="w-full max-w-lg rounded-[32px] border border-white bg-white/90 p-8 text-center shadow-[0_20px_48px_rgba(10,18,51,0.12)] sm:p-10">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#D9F5DC]">
+            <CheckCircle className="h-9 w-9 text-[#22C55E]" />
           </div>
-          <h2 className="font-serif text-3xl text-white mb-4">Order Berhasil!</h2>
-          <div className="bg-[#1c2143] border border-[#C0C0C0]/20 p-6 mb-8">
-            <p className="text-white/60 text-sm mb-2">Nomor Order Kamu</p>
-            <p className="text-2xl font-mono text-[#D4AF37]">{orderNumber}</p>
+          <h1 className="mb-4 text-3xl font-bold text-ashira-navy">Order Berhasil!</h1>
+          <div className="mb-6 rounded-2xl bg-[#ECEDF3] p-5">
+            <p className="mb-1 text-sm text-ashira-muted">Nomor Order Kamu</p>
+            <p className="font-mono text-2xl font-bold text-ashira-deep">{orderNumber}</p>
           </div>
-          <p className="text-white/60 mb-4">
-            Tim Ashira akan menghubungi kamu via WhatsApp atau Email 
-            dalam 1x24 jam untuk konfirmasi detail order.
+          <p className="mb-3 text-ashira-navy/80">
+            Tim Ashira akan menghubungi kamu via WhatsApp atau Email dalam 1x24 jam untuk konfirmasi detail order.
           </p>
-          <p className="text-white/40 text-sm">Simpan nomor order ini sebagai referensi.</p>
+          <p className="text-sm text-ashira-muted">Simpan nomor order ini sebagai referensi.</p>
         </div>
       </section>
     )
   }
 
   return (
-    <section className="min-h-screen pt-24 pb-16 px-6">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <Image
-            src="/images/ashira-corporate-logo.png"
-            alt="ASHIRA'H.CO"
-            width={150}
-            height={50}
-            className="mx-auto mb-6"
-            style={{ width: 'auto', height: 'auto' }}
-          />
-          <h1 className="font-serif text-3xl md:text-4xl text-white mb-4">
-            Custom Apparel Order Form
-          </h1>
-          <p className="text-white/60 max-w-xl mx-auto">
-            Fill in your details below to request a custom quote. Our team will contact you within 24 hours.
-          </p>
-        </div>
+    <section className="px-3 pb-20 pt-[92px] sm:px-6 lg:px-8 lg:pt-[112px]">
+      {/* Header */}
+      <div className="ashira-dark-gradient mx-auto max-w-[1376px] rounded-[32px] px-6 py-12 text-center shadow-[0_20px_48px_rgba(10,18,51,0.25)] sm:px-10 lg:rounded-[44px] lg:py-16">
+        <span className="rounded-full border border-white/55 px-4 py-1.5 text-[13px] font-medium text-white">
+          ASHIRA Apparel — Pesanan Custom
+        </span>
+        <h1 className="ashira-silver-text mx-auto mt-6 max-w-[720px] text-[34px] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[48px]">
+          Formulir Pesanan Apparel Custom
+        </h1>
+        <p className="mx-auto mt-4 max-w-xl text-base leading-[1.6] text-[#D9D9D9]">
+          Isi data di bawah untuk meminta penawaran custom. Tim kami akan menghubungimu dalam 1×24 jam.
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="mx-auto mt-8 max-w-4xl">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Client Details */}
-          <div className="bg-[#1c2143]/50 border border-[#C0C0C0]/10 p-6 md:p-8">
-            <h3 className="text-white font-medium mb-6 flex items-center gap-2">
-              <span className="w-6 h-6 bg-[#D4AF37] text-[#1c2143] rounded-full text-sm flex items-center justify-center">1</span>
-              Client Details
-            </h3>
-            
-            <div className="grid md:grid-cols-2 gap-4">
+          <div className={card}>
+            <StepTitle step="1">Data Pemesan</StepTitle>
+            <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <label className="text-white/60 text-sm mb-2 block">Full Name *</label>
-                <Input
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="bg-[#0a0d1a] border-[#C0C0C0]/20 text-white placeholder:text-white/30"
-                  placeholder="John Doe"
-                />
+                <label htmlFor="order-name" className={label}>Nama Lengkap *</label>
+                <Input id="order-name" name="name" value={formData.name} onChange={handleInputChange} required className={field} placeholder="Nama lengkap" />
               </div>
               <div>
-                <label className="text-white/60 text-sm mb-2 block">Email *</label>
-                <Input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="bg-[#0a0d1a] border-[#C0C0C0]/20 text-white placeholder:text-white/30"
-                  placeholder="john@example.com"
-                />
+                <label htmlFor="order-email" className={label}>Email *</label>
+                <Input id="order-email" type="email" name="email" value={formData.email} onChange={handleInputChange} required className={field} placeholder="nama@email.com" />
               </div>
               <div>
-                <label className="text-white/60 text-sm mb-2 block">WhatsApp Number *</label>
+                <label htmlFor="order-whatsapp" className={label}>Nomor WhatsApp *</label>
                 <Input
+                  id="order-whatsapp"
                   name="whatsapp"
+                  type="tel"
+                  inputMode="tel"
+                  pattern="(\+62|62|0)8[0-9 \-]{7,15}"
+                  title="Nomor WhatsApp Indonesia, mis. 08123456789"
                   value={formData.whatsapp}
                   onChange={handleInputChange}
                   required
-                  className="bg-[#0a0d1a] border-[#C0C0C0]/20 text-white placeholder:text-white/30"
+                  className={field}
                   placeholder="08123456789"
                 />
               </div>
               <div>
-                <label className="text-white/60 text-sm mb-2 block">Address *</label>
-                <Input
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  required
-                  className="bg-[#0a0d1a] border-[#C0C0C0]/20 text-white placeholder:text-white/30"
-                  placeholder="City, Province"
-                />
+                <label htmlFor="order-address" className={label}>Alamat *</label>
+                <Input id="order-address" name="address" value={formData.address} onChange={handleInputChange} required className={field} placeholder="Kota, Provinsi" />
               </div>
             </div>
           </div>
 
           {/* Order Details */}
-          <div className="bg-[#1c2143]/50 border border-[#C0C0C0]/10 p-6 md:p-8">
-            <h3 className="text-white font-medium mb-6 flex items-center gap-2">
-              <span className="w-6 h-6 bg-[#D4AF37] text-[#1c2143] rounded-full text-sm flex items-center justify-center">2</span>
-              Order Details
-            </h3>
-            
+          <div className={card}>
+            <StepTitle step="2">Detail Pesanan</StepTitle>
             <div className="space-y-6">
               <div>
-                <label className="text-white/60 text-sm mb-2 block">Order Type *</label>
+                <label htmlFor="order-type" className={label}>Jenis Produk *</label>
                 <Input
+                  id="order-type"
                   name="orderType"
                   value={formData.orderType}
                   onChange={handleInputChange}
                   required
-                  className="bg-[#0a0d1a] border-[#C0C0C0]/20 text-white placeholder:text-white/30"
-                  placeholder="e.g., Jersey Futsal, Varsity Jacket, T-Shirt Event"
+                  className={field}
+                  placeholder="mis. Jersey Futsal, Jaket Varsity, Kaos Event"
                 />
               </div>
 
               {/* Size Grid */}
-              <div>
-                <label className="text-white/60 text-sm mb-4 block">Size Quantities</label>
-                <div className="grid grid-cols-5 gap-3">
+              <fieldset>
+                <legend className={label}>Jumlah per Ukuran</legend>
+                <div className="grid grid-cols-5 gap-2 sm:gap-3">
                   {(Object.keys(formData.sizes) as Array<keyof typeof formData.sizes>).map((size) => (
                     <div key={size} className="text-center">
-                      <label className="text-white/80 text-sm block mb-2">{size}</label>
+                      <label htmlFor={`size-${size}`} className="mb-2 block text-sm font-semibold text-ashira-muted">{size}</label>
                       <Input
+                        id={`size-${size}`}
                         type="number"
                         min="0"
+                        inputMode="numeric"
                         value={formData.sizes[size] || ""}
                         onChange={(e) => handleSizeChange(size, e.target.value)}
-                        className="bg-[#0a0d1a] border-[#C0C0C0]/20 text-white text-center"
+                        className={`${field} px-1 text-center`}
                       />
                     </div>
                   ))}
                 </div>
-                <p className="text-white/40 text-sm mt-3">
-                  Total Quantity: <span className="text-[#D4AF37]">{totalQuantity} pcs</span>
+                <p className="mt-3 text-sm text-ashira-muted">
+                  Total: <span className="font-semibold text-ashira-blue">{totalQuantity} pcs</span>
                 </p>
-              </div>
-
-
+              </fieldset>
             </div>
           </div>
 
           {/* Design Upload */}
-          <div className="bg-[#1c2143]/50 border border-[#C0C0C0]/10 p-6 md:p-8">
-            <h3 className="text-white font-medium mb-6 flex items-center gap-2">
-              <span className="w-6 h-6 bg-[#D4AF37] text-[#1c2143] rounded-full text-sm flex items-center justify-center">3</span>
-              Design Upload
-            </h3>
-            
+          <div className={card}>
+            <StepTitle step="3">Unggah Desain</StepTitle>
             <div
-              className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-                isDragging 
-                  ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
-                  : 'border-[#C0C0C0]/20 hover:border-[#C0C0C0]/40'
+              className={`rounded-2xl border-2 border-dashed p-8 text-center transition-colors ${
+                isDragging ? "border-ashira-royal bg-[#EEF0FA]" : "border-ashira-navy/15 hover:border-ashira-navy/30"
               }`}
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
               onDragLeave={() => setIsDragging(false)}
               onDrop={handleDrop}
             >
-              <Upload className="w-10 h-10 text-white/40 mx-auto mb-4" />
-              <p className="text-white/60 mb-2">
-                {formData.designFile 
-                  ? formData.designFile.name 
-                  : "Drag and drop your design here"}
+              <Upload className="mx-auto mb-4 h-10 w-10 text-ashira-muted" />
+              <p className="mb-2 font-medium text-ashira-navy">
+                {formData.designFile ? formData.designFile.name : "Tarik & lepas file desain di sini"}
               </p>
-              <p className="text-white/40 text-sm mb-4">or</p>
+              <p className="mb-4 text-sm text-ashira-muted">atau</p>
               <label className="cursor-pointer">
-                <span className="px-4 py-2 bg-[#C0C0C0]/10 text-white/80 text-sm hover:bg-[#C0C0C0]/20 transition-colors">
-                  Browse Files
+                <span className="inline-flex rounded-full border border-ashira-navy/20 px-5 py-2 text-sm font-semibold text-ashira-navy transition-colors hover:bg-[#EEF0FA]">
+                  Pilih File
                 </span>
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/*,.pdf,.ai,.psd"
-                  onChange={handleFileChange}
-                />
+                <input type="file" className="sr-only" accept="image/*,.pdf,.ai,.psd" onChange={handleFileChange} />
               </label>
-              <p className="text-white/30 text-xs mt-4">
-                Supported: JPG, PNG, PDF, AI, PSD
-              </p>
+              <p className="mt-4 text-xs text-ashira-muted">Format: JPG, PNG, PDF, AI, PSD</p>
             </div>
           </div>
 
           {/* Additional Notes */}
-          <div className="bg-[#1c2143]/50 border border-[#C0C0C0]/10 p-6 md:p-8">
-            <h3 className="text-white font-medium mb-6 flex items-center gap-2">
-              <span className="w-6 h-6 bg-[#D4AF37] text-[#1c2143] rounded-full text-sm flex items-center justify-center">4</span>
-              Additional Notes
-            </h3>
-            
+          <div className={card}>
+            <StepTitle step="4">Catatan Tambahan</StepTitle>
             <Textarea
+              aria-label="Catatan tambahan"
               name="notes"
               value={formData.notes}
               onChange={handleInputChange}
               rows={4}
-              className="bg-[#0a0d1a] border-[#C0C0C0]/20 text-white placeholder:text-white/30"
-              placeholder="Any special requirements, deadline, or questions..."
+              className="rounded-xl border-ashira-navy/15 bg-white text-ashira-navy placeholder:text-ashira-muted/60"
+              placeholder="Kebutuhan khusus, deadline, atau pertanyaan..."
             />
           </div>
 
-          {error && (
-            <p className="text-red-400 text-sm text-center mb-4">{error}</p>
-          )}
+          {error && <p className="text-center text-sm font-medium text-red-600">{error}</p>}
 
           {/* Submit Button */}
-          <Button
+          <button
             type="submit"
-            size="lg"
-            className="w-full rounded-full py-6 text-base font-medium transition-all hover:scale-[1.02]"
-            style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
+            disabled={isChatLoading}
+            aria-busy={isChatLoading}
+            className="ashira-dark-gradient flex w-full items-center justify-center gap-2 rounded-full py-4 text-base font-semibold text-white shadow-[0_10px_24px_rgba(10,18,51,0.25)] transition-transform hover:scale-[1.01] disabled:cursor-wait disabled:opacity-80 disabled:hover:scale-100"
           >
-            Cek Harga
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
+            {isChatLoading && !chatMessages.length ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" /> Menghitung harga...
+              </>
+            ) : (
+              <>
+                {showNegotiator ? "Cek Harga Ulang" : "Cek Harga"} <ArrowRight className="h-5 w-5" />
+              </>
+            )}
+          </button>
 
-          <p className="text-white/40 text-xs text-center">
-            By submitting this form, you agree to be contacted by our team regarding your order.
+          <p className="text-center text-xs text-ashira-muted">
+            Dengan mengirim formulir ini, kamu setuju dihubungi tim kami terkait pesananmu.
           </p>
         </form>
 
         {showNegotiator && !isSubmitted && (
-          <div className="max-w-4xl mx-auto mt-8 mb-16">
-            <div className="bg-[#1c2143]/50 border border-[#C0C0C0]/10 p-6 md:p-8">
-              <h3 className="text-white font-medium mb-6 flex items-center gap-2">
-                <span className="w-6 h-6 bg-[#D4AF37] text-[#1c2143] rounded-full text-sm flex items-center justify-center">✦</span>
-                Negosiasi Harga
-              </h3>
-              
-              <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
-                {chatMessages.map((msg, i) => (
+          <div ref={negotiatorRef} className={`${card} mt-6 scroll-mt-24`}>
+            <StepTitle step="✦">Negosiasi Harga</StepTitle>
+
+            <div className={`max-h-96 space-y-3 overflow-y-auto ${chatMessages.length || isChatLoading ? "mb-6" : ""}`} aria-live="polite">
+              {chatMessages.map((msg, i) => (
+                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div
-                    key={i}
-                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`max-w-[80%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm ${
+                      msg.role === "user"
+                        ? "rounded-tr-md bg-ashira-deep font-medium text-white"
+                        : "rounded-tl-md bg-[#EEF0FA] text-ashira-navy"
+                    }`}
                   >
-                    <div
-                      className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm whitespace-pre-wrap ${
-                        msg.role === 'user'
-                          ? 'bg-[#D4AF37] text-[#1c2143] font-medium'
-                          : 'bg-[#0a0d1a] text-white/90 border border-[#C0C0C0]/10'
-                      }`}
-                    >
-                      {msg.content}
-                    </div>
+                    {msg.content}
                   </div>
-                ))}
-                {isChatLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-[#0a0d1a] border border-[#C0C0C0]/10 px-4 py-3 rounded-2xl">
-                      <span className="text-white/40 text-sm">Tim Ashira sedang mengetik...</span>
-                    </div>
+                </div>
+              ))}
+              {isChatLoading && (
+                <div className="flex justify-start">
+                  <div className="rounded-2xl rounded-tl-md bg-[#EEF0FA] px-4 py-3">
+                    <span className="text-sm text-ashira-muted">Tim ASHIRA sedang mengetik...</span>
                   </div>
-                )}
-              </div>
-              
-              {!isDealDone && (
-                <div className="flex gap-3">
-                  <Input
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                    placeholder="Ketik pesanmu di sini..."
-                    disabled={isChatLoading}
-                    className="bg-[#0a0d1a] border-[#C0C0C0]/20 text-white placeholder:text-white/30 flex-1"
-                  />
-                  <Button
-                    onClick={handleSendMessage}
-                    disabled={isChatLoading || !userInput.trim()}
-                    style={{ backgroundColor: '#D4AF37', color: '#1c2143' }}
-                  >
-                    <Send className="w-4 h-4" />
-                  </Button>
                 </div>
               )}
-              
-              {isDealDone && !isSubmitted && (
-                <p className="text-white/40 text-sm text-center">
-                  Sedang memproses order kamu...
-                </p>
-              )}
             </div>
+
+            {aiUnavailable && (
+              <div className="rounded-2xl bg-[#EEF0FA] p-5">
+                <p className="font-semibold text-ashira-navy">Negosiasi otomatis sedang tidak tersedia</p>
+                <p className="mt-1 text-sm text-ashira-muted">
+                  Data pesananmu tidak hilang. Kirim ringkasannya ke tim kami lewat WhatsApp untuk mendapatkan penawaran harga.
+                </p>
+                <a
+                  href={`${WHATSAPP_URL}?text=${encodeURIComponent(waOrderText)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ashira-dark-gradient mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white"
+                >
+                  <MessageCircle className="h-4 w-4" /> Lanjut via WhatsApp
+                </a>
+              </div>
+            )}
+
+            {!isDealDone && !aiUnavailable && (
+              <div className="flex gap-3">
+                <Input
+                  aria-label="Pesan negosiasi"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                  placeholder="Ketik pesanmu di sini..."
+                  disabled={isChatLoading}
+                  className={`${field} flex-1`}
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={isChatLoading || !userInput.trim()}
+                  aria-label="Kirim pesan"
+                  className="ashira-dark-gradient h-11 w-11 rounded-full p-0 text-white"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+
+            {isDealDone && !isSubmitted && (
+              <p className="text-center text-sm text-ashira-muted">Sedang memproses order kamu...</p>
+            )}
           </div>
         )}
       </div>

@@ -1,5 +1,7 @@
 "use client"
 
+import { asCaughtError } from "@/lib/utils"
+
 import * as React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -45,7 +47,7 @@ interface LineItem {
 }
 
 export default function NewInvoicePage() {
-  const [customers, setCustomers] = useState<Profile[]>([])
+  const [customers, setCustomers] = useState<Pick<Profile, "id" | "full_name" | "email" | "whatsapp">[]>([])
   const [services, setServices] = useState<Service[]>([])
   const [orders, setOrders] = useState<Order[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
@@ -108,7 +110,8 @@ export default function NewInvoicePage() {
         setCustomers(customersData || [])
         setServices(servicesData || [])
         setOrders(ordersData || [])
-      } catch (error: any) {
+      } catch (err) {
+        const error = asCaughtError(err)
         console.error('Full error:', error?.code, error?.message, error?.hint, JSON.stringify(error))
         toast.error(`Gagal memuat: ${error?.message || 'Unknown error'}`)
       }
@@ -214,8 +217,9 @@ const handleSendToCustomer = async () => {
     })
     
     toast.success("Invoice berhasil dikirim ke pelanggan")
-    window.location.href = "/admin/invoices"
-  } catch (error: any) {
+    window.location.assign("/admin/invoices")
+  } catch (err) {
+    const error = asCaughtError(err)
     const errorMessage = error?.message || error?.error_description || JSON.stringify(error) || "Terjadi kesalahan"
     console.error("Error sending invoice:", error)
     toast.error(`Gagal mengirim invoice: ${errorMessage}`)

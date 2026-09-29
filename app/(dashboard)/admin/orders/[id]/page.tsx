@@ -1,5 +1,7 @@
 "use client"
 
+import { asCaughtError } from "@/lib/utils"
+
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
@@ -253,7 +255,8 @@ export default function OrderDetailPage() {
       await deleteOrder(orderId)
       toast.success("Pesanan berhasil dihapus")
       window.location.href = '/admin/orders'
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error deleting order:", error)
       toast.error(error.message || "Gagal menghapus pesanan")
     } finally {

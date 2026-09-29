@@ -1,15 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
 @theme {
-  --font-sans: 'Inter', var(--font-inter), sans-serif;
-  --font-display: 'Plus Jakarta Sans', var(--font-plus-jakarta), sans-serif;
+  /* Tipografi HANDOVER: Inter (heading 700/800), Plus Jakarta Sans (body/nav).
+     Semua dimuat lewat next/font di app/layout.tsx. */
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-display: var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif;
   --color-navy: #0F1B3D;
   --color-green: #16A34A;
   --color-green-bg: #F0FDF4;
   --color-slate: #64748B;
   --color-border: #E2E8F0;
+
+  /* ASHIRA redesign v2 — token dari Figma "Color Pallete" */
+  --color-ashira-ink: #04030D;
+  --color-ashira-navy: #1C2143;
+  --color-ashira-deep: #213167;
+  --color-ashira-royal: #2B2996;
+  --color-ashira-blue: #2A50D0;
+  --color-ashira-muted: #5A5F8E;
+  --color-ashira-lilac: #B899CB;
+  --color-ashira-silver: #D1D1D1;
+  --color-ashira-offwhite: #F0F0EA;
 }
 
 body {
@@ -158,4 +170,24 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+/* ===== ASHIRA redesign v2 ===== */
+.ashira-dark-gradient { background: linear-gradient(180deg, #04030D 0%, #2B2996 100%); }
+.ashira-silver-gradient { background: linear-gradient(90deg, #D1D1D1 0%, #FFFFFF 100%); }
+.ashira-bluewhite-gradient { background: linear-gradient(90deg, #213167 0%, #616593 100%); }
+.ashira-page-gradient { background: linear-gradient(90deg, #E2E2E2 0%, #F7F7F5 100%); }
+.ashira-stage { background: linear-gradient(180deg, #D1D1D1 0%, #DDDDDD 100%); box-shadow: inset 0 2px 4px rgba(255,255,255,.7), 0 10px 30px rgba(10,18,51,.25); }
+.ashira-silver-text { background: linear-gradient(90deg, #D1D1D1 0%, #FFFFFF 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ashira-grid-pattern {
+  background-image:
+    linear-gradient(rgba(28,33,67,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28,33,67,.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@keyframes ashira-hero-progress {
+  from { width: 0%; }
+  to { width: 100%; }
 }

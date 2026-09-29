@@ -1,8 +1,6 @@
-"use client"
-
-import { Shirt, Crown, Briefcase, Award, BadgeCheck, Layers, Wind, Shield, Zap } from "lucide-react"
+import { Shirt, Crown, Briefcase, Award, BadgeCheck, Layers, Wind, Shield, Zap, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { SectionBadge } from "@/components/landing/sections/BusinessSection"
 
 const products = [
   {
@@ -10,11 +8,11 @@ const products = [
     title: "Jersey Custom",
     materials: ["Jersey Print", "Jersey Sablon"],
     options: ["Full Print", "Sablon Polyflex", "DTF", "Manual"],
-    description: "High-performance sports jerseys with premium printing quality for teams and organizations.",
-    price: "Starting from Rp 75.000",
+    description: "Jersey olahraga berperforma tinggi dengan kualitas cetak premium untuk tim dan organisasi.",
+    price: "Mulai Rp75.000",
     specs: [
-      { icon: Wind, label: "High Breathability" },
-      { icon: Shield, label: "Durable Print" },
+      { icon: Wind, label: "Sirkulasi udara baik" },
+      { icon: Shield, label: "Cetakan awet" },
     ],
   },
   {
@@ -22,11 +20,11 @@ const products = [
     title: "T-Shirt Custom",
     materials: ["PE", "18s", "24s", "30s", "Jersey", "Biowash"],
     options: ["Full Print", "Sablon Polyflex", "DTF", "Manual"],
-    description: "Versatile custom t-shirts with premium fabric options for any occasion or event.",
-    price: "Starting from Rp 50.000",
+    description: "Kaos custom serbaguna dengan pilihan bahan premium untuk berbagai acara.",
+    price: "Mulai Rp50.000",
     specs: [
-      { icon: Zap, label: "Premium Cotton" },
-      { icon: Wind, label: "Comfortable Fit" },
+      { icon: Zap, label: "Katun premium" },
+      { icon: Wind, label: "Nyaman dipakai" },
     ],
   },
   {
@@ -34,11 +32,11 @@ const products = [
     title: "Varsity Jacket",
     materials: ["Cotton Fleece", "Canvas", "Wool Blend"],
     options: ["Full Print", "Bordir Timbul", "Bordir Biasa"],
-    description: "Classic varsity jackets with premium embroidery options for schools and organizations.",
-    price: "Starting from Rp 180.000",
+    description: "Jaket varsity klasik dengan pilihan bordir premium untuk sekolah dan organisasi.",
+    price: "Mulai Rp180.000",
     specs: [
-      { icon: Shield, label: "Premium Materials" },
-      { icon: Award, label: "Custom Patches" },
+      { icon: Shield, label: "Bahan premium" },
+      { icon: Award, label: "Patch custom" },
     ],
   },
   {
@@ -46,11 +44,11 @@ const products = [
     title: "Work Jacket",
     materials: ["Canvas", "Corduroy", "Harrington", "American Drill"],
     options: ["Bordir Timbul", "Bordir Biasa", "Full Print"],
-    description: "Professional work jackets built for durability, style, and corporate identity.",
-    price: "Starting from Rp 150.000",
+    description: "Jaket kerja profesional yang awet, bergaya, dan menonjolkan identitas perusahaan.",
+    price: "Mulai Rp150.000",
     specs: [
-      { icon: Shield, label: "Heavy Duty" },
-      { icon: Wind, label: "All Weather" },
+      { icon: Shield, label: "Tahan banting" },
+      { icon: Wind, label: "Segala cuaca" },
     ],
   },
   {
@@ -58,11 +56,11 @@ const products = [
     title: "Almamater",
     materials: ["American Drill", "Hightwist"],
     options: ["Bordir Biasa", "Bordir Timbul"],
-    description: "Prestigious alma mater jackets for educational institutions with professional finishing.",
-    price: "Starting from Rp 200.000",
+    description: "Jaket almamater untuk institusi pendidikan dengan finishing profesional.",
+    price: "Mulai Rp200.000",
     specs: [
-      { icon: Award, label: "Official Grade" },
-      { icon: Shield, label: "Long Lasting" },
+      { icon: Award, label: "Standar resmi" },
+      { icon: Shield, label: "Tahan lama" },
     ],
   },
   {
@@ -70,11 +68,11 @@ const products = [
     title: "Polo & Kemeja",
     materials: ["POLO", "American Drill", "Ribstop", "Jersey"],
     options: ["Bordir Timbul", "Bordir Biasa", "Sablon"],
-    description: "Professional polo shirts and dress shirts for corporate uniforms and events.",
-    price: "Starting from Rp 85.000",
+    description: "Polo dan kemeja profesional untuk seragam perusahaan dan acara.",
+    price: "Mulai Rp85.000",
     specs: [
-      { icon: BadgeCheck, label: "Corporate Grade" },
-      { icon: Wind, label: "Easy Care" },
+      { icon: BadgeCheck, label: "Standar korporat" },
+      { icon: Wind, label: "Mudah dirawat" },
     ],
   },
 ]
@@ -90,108 +88,74 @@ const additionalProducts = [
 
 export function ApparelProducts() {
   return (
-    <section id="products" className="py-24 lg:py-32 bg-[#0a0d1a]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="products" className="scroll-mt-24 px-3 pb-8 pt-16 sm:px-6 lg:px-8 lg:pt-20">
+      <div className="mx-auto max-w-[1376px]">
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px w-12 bg-[#C0C0C0]" />
-            <span className="text-[#C0C0C0] text-sm font-medium tracking-[0.2em] uppercase">
-              Product Catalog
-            </span>
-            <div className="h-px w-12 bg-[#C0C0C0]" />
-          </div>
-
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white leading-tight mb-6">
+        <div className="flex flex-col items-center text-center">
+          <SectionBadge>Katalog Produk</SectionBadge>
+          <h2 className="mt-5 text-[32px] font-bold tracking-[-0.02em] text-ashira-navy sm:text-[44px]">
             Premium Custom Apparel
           </h2>
-          <p className="text-white/60 max-w-2xl mx-auto leading-relaxed">
-            Konveksi kustom untuk mahasiswa dengan harga yang bisa dinegosiasi. 
-            Clothing event dan produksi seragam berkualitas tinggi.
+          <p className="mt-3 max-w-[620px] text-base leading-[1.6] text-ashira-muted sm:text-lg">
+            Konveksi kustom dengan harga yang bisa dinegosiasi. Clothing event dan produksi seragam berkualitas tinggi.
           </p>
         </div>
 
         {/* Products Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product, index) => (
-            <div
-              key={index}
-              className="group relative bg-[#1c2143]/50 border border-[#C0C0C0]/10 hover:border-[#C0C0C0]/30 transition-all duration-500 overflow-hidden"
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {products.map((product) => (
+            <article
+              key={product.title}
+              className="flex flex-col rounded-[28px] border border-white bg-white/90 p-7 shadow-[0_12px_32px_rgba(10,18,51,0.1)] transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(10,18,51,0.16)]"
             >
-              {/* Hover gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#C0C0C0]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              
-              <div className="relative p-8">
-                {/* Icon */}
-                <div className="w-14 h-14 bg-[#C0C0C0]/10 flex items-center justify-center mb-6 group-hover:bg-[#C0C0C0]/20 transition-colors">
-                  <product.icon className="w-7 h-7 text-[#C0C0C0]" />
-                </div>
-
-                {/* Title & Price */}
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-serif text-xl text-white">
-                    {product.title}
-                  </h3>
-                </div>
-                <p className="text-[#D4AF37] text-sm font-medium mb-4">
+              <div className="flex items-start justify-between gap-4">
+                <span className="ashira-dark-gradient flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-white">
+                  <product.icon className="h-6 w-6" />
+                </span>
+                <span className="rounded-full bg-[#EEF0FA] px-3 py-1.5 text-[13px] font-semibold text-ashira-blue">
                   {product.price}
-                </p>
-
-                {/* Description */}
-                <p className="text-white/50 text-sm mb-6 leading-relaxed">
-                  {product.description}
-                </p>
-
-                {/* Specs */}
-                <div className="flex gap-4 mb-6">
-                  {product.specs.map((spec, specIndex) => (
-                    <div key={specIndex} className="flex items-center gap-2">
-                      <spec.icon className="w-4 h-4 text-[#C0C0C0]/60" />
-                      <span className="text-xs text-white/40">{spec.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Materials & Options */}
-                <div className="space-y-3 pt-4 border-t border-[#C0C0C0]/10">
-                  <div>
-                    <span className="text-xs text-[#C0C0C0] font-medium tracking-wide uppercase">
-                      Materials
-                    </span>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {product.materials.map((material, mIndex) => (
-                        <span key={mIndex} className="text-xs text-white/40 bg-white/5 px-2 py-1">
-                          {material}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-[#C0C0C0] font-medium tracking-wide uppercase">
-                      Print Options
-                    </span>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {product.options.map((option, oIndex) => (
-                        <span key={oIndex} className="text-xs text-white/40 bg-white/5 px-2 py-1">
-                          {option}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                </span>
               </div>
-            </div>
+
+              <h3 className="mt-5 text-[22px] font-bold text-ashira-navy">{product.title}</h3>
+              <p className="mt-2 text-[15px] leading-[1.55] text-ashira-muted">{product.description}</p>
+
+              <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                {product.specs.map((spec) => (
+                  <li key={spec.label} className="flex items-center gap-1.5 text-[13px] font-medium text-ashira-navy">
+                    <spec.icon className="h-4 w-4 text-ashira-royal" />
+                    {spec.label}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-5 space-y-3 border-t border-ashira-navy/10 pt-5">
+                {[
+                  { label: "Bahan", items: product.materials },
+                  { label: "Opsi Cetak", items: product.options },
+                ].map((group) => (
+                  <div key={group.label}>
+                    <p className="text-xs font-semibold uppercase tracking-[0.08em] text-ashira-muted">{group.label}</p>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {group.items.map((item) => (
+                        <span key={item} className="rounded-full bg-[#EEF0FA] px-2.5 py-1 text-xs font-medium text-ashira-navy">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
           ))}
         </div>
 
         {/* Additional Products */}
-        <div className="mt-12 p-8 bg-[#1c2143]/30 border border-[#C0C0C0]/10">
-          <p className="text-center text-sm text-white/50 mb-4">
-            Also Available:
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {additionalProducts.map((product, index) => (
-              <span key={index} className="text-white/70 text-sm px-4 py-2 border border-[#C0C0C0]/20 hover:border-[#C0C0C0]/40 transition-colors">
+        <div className="mt-6 rounded-[28px] border border-white bg-white/90 p-7 text-center shadow-[0_12px_32px_rgba(10,18,51,0.08)]">
+          <p className="text-sm font-medium text-ashira-muted">Juga tersedia:</p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2.5">
+            {additionalProducts.map((product) => (
+              <span key={product} className="rounded-full border border-ashira-navy/15 px-4 py-2 text-sm font-medium text-ashira-navy">
                 {product}
               </span>
             ))}
@@ -199,17 +163,13 @@ export function ApparelProducts() {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 text-center">
-          <Button
-            asChild
-            size="lg"
-            className="rounded-full px-10 py-6 text-base font-medium transition-all hover:scale-105"
-            style={{ backgroundColor: '#C0C0C0', color: '#0a0d1a' }}
+        <div className="mt-10 flex justify-center">
+          <Link
+            href="/order"
+            className="ashira-dark-gradient inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold text-white shadow-[0_8px_20px_rgba(10,18,51,0.25)] transition-transform hover:scale-[1.02]"
           >
-            <Link href="/order">
-              Request Custom Quote
-            </Link>
-          </Button>
+            Minta Penawaran Custom <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>

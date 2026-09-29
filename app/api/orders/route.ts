@@ -1,3 +1,4 @@
+import { asCaughtError } from "@/lib/utils"
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
@@ -96,7 +97,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, order })
 
-  } catch (error: any) {
+  } catch (err) {
+    const error = asCaughtError(err)
     console.error('Create order error:', error)
     return NextResponse.json(
       { error: error.message },

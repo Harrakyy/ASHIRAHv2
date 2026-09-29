@@ -1,5 +1,7 @@
 "use client"
 
+import { asCaughtError } from "@/lib/utils"
+
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
@@ -122,7 +124,8 @@ export default function InvoiceDetailPage() {
       ])
       setInvoice(invoiceData)
       setPayment(paymentData as Payment | null)
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error loading invoice:", error)
       toast.error("Gagal memuat invoice")
     } finally {
@@ -131,6 +134,8 @@ export default function InvoiceDetailPage() {
   }, [invoiceId])
 
   useEffect(() => {
+    // Fetch data saat mount / invoiceId berubah
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData()
   }, [loadData])
 
@@ -236,7 +241,8 @@ export default function InvoiceDetailPage() {
 
       await loadData()
 
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error('=== ERROR in handleSendToCustomer ===')
       console.error('Error message:', error?.message)
       console.error('Error code:', error?.code)
@@ -336,7 +342,8 @@ export default function InvoiceDetailPage() {
       await approvePayment(payment.id, invoice.id, invoice.customer_id, user.id)
       toast.success("Pembayaran berhasil dikonfirmasi!")
       await loadData()
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error approving payment:", error)
       toast.error(error.message || "Gagal konfirmasi pembayaran")
     } finally {
@@ -356,7 +363,8 @@ export default function InvoiceDetailPage() {
       setShowRejectModal(false)
       setRejectReason("")
       await loadData()
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error rejecting payment:", error)
       toast.error(error.message || "Gagal menolak bukti pembayaran")
     } finally {
@@ -368,7 +376,7 @@ export default function InvoiceDetailPage() {
     if (!invoice) return
     setIsUpdatingStatus(true)
     try {
-      await updateInvoice(invoice.id, { status: newStatus as any })
+      await updateInvoice(invoice.id, { status: newStatus as Invoice["status"] })
       const statusLabel = statusStepLabels[newStatus] || newStatus
       await createNotification({
         user_id: invoice.customer_id,
@@ -428,7 +436,8 @@ export default function InvoiceDetailPage() {
 
       toast.success(`Status invoice diubah ke: ${statusLabel}`)
       await loadData()
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error updating status:", error)
       toast.error(error.message || "Gagal update status")
     } finally {
@@ -443,7 +452,8 @@ export default function InvoiceDetailPage() {
       await deleteInvoice(invoice.id)
       toast.success("Invoice berhasil dihapus")
       window.location.href = '/admin/invoices'
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error deleting invoice:", error)
       toast.error(error.message || "Gagal menghapus invoice")
     } finally {

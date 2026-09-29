@@ -32,7 +32,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
 
-  const mapProfile = (profile: any): User => ({
+  const mapProfile = (profile: {
+    id: string
+    full_name?: string | null
+    email?: string | null
+    whatsapp?: string | null
+    role?: string | null
+  }): User => ({
     id: profile.id,
     name: profile.full_name || profile.email?.split("@")[0] || "User",
     email: profile.email || "",

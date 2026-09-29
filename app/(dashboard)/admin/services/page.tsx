@@ -1,5 +1,7 @@
 "use client"
 
+import { asCaughtError } from "@/lib/utils"
+
 import * as React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -37,7 +39,8 @@ export default function AdminServicesPage() {
       const updated = await updateService(service.id, { is_active: !service.is_active })
       setServices(prev => prev.map(s => s.id === service.id ? updated : s))
       toast.success(`Layanan ${updated.is_active ? 'diaktifkan' : 'dinonaktifkan'}`)
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error updating service:", error)
       toast.error(error.message || "Gagal memperbarui status")
     }
@@ -55,7 +58,8 @@ export default function AdminServicesPage() {
       await deleteService(serviceToDelete.id)
       setServices(prev => prev.filter(s => s.id !== serviceToDelete.id))
       toast.success("Layanan berhasil dihapus")
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error("Error deleting service:", error)
       toast.error(error.message || "Gagal menghapus layanan")
     } finally {

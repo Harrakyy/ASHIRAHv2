@@ -1,19 +1,17 @@
 import { Metadata } from "next"
 import { OrderForm } from "@/components/order/order-form"
-import { Header } from "@/components/header"
-import { FloatingIcons } from "@/components/floating-icons"
+import { Footer } from "@/components/footer"
 
 export const metadata: Metadata = {
-  title: "Order Custom Apparel | ASHIRA'H.CO",
-  description: "Submit your custom apparel order. Premium quality jerseys, t-shirts, varsity jackets, and more with negotiable pricing.",
+  title: "Pesan Apparel Custom | ASHIRA Apparel",
+  description: "Kirim pesanan apparel custom: jersey, kaos, jaket varsity, dan lainnya dengan kualitas premium dan harga yang bisa dinegosiasikan.",
 }
 
 export default function OrderPage() {
   return (
-    <main className="min-h-screen bg-[#0a0d1a]">
-      <Header />
+    <main className="ashira-page-gradient min-h-screen">
       <OrderForm />
-      <FloatingIcons />
+      <Footer />
     </main>
   )
 }

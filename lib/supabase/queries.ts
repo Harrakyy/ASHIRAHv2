@@ -213,7 +213,10 @@ export async function getServiceById(id: string) {
   return data as Service
 }
 
-export async function createService(service: Omit<Service, "id" | "created_at">) {
+/** `current_slots` opsional — kolom punya default di database. */
+export async function createService(
+  service: Omit<Service, "id" | "created_at" | "current_slots"> & Partial<Pick<Service, "current_slots">>,
+) {
   const supabase = createClient()
   const { data, error } = await supabase
     .from("services")
@@ -485,7 +488,7 @@ export async function createInvoice(invoice: {
     .select("*", { count: "exact", head: true })
 
   const invoiceNumber = `INV-${currentYear}-${String((count || 0) + 1).padStart(3, "0")}`
-  const insertData: any = {
+  const insertData: Record<string, unknown> = {
     invoice_number: invoiceNumber,
     customer_id: invoice.customer_id,
     subtotal: invoice.subtotal,

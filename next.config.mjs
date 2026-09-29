@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     unoptimized: true,
   },
@@ -14,6 +11,10 @@ const nextConfig = {
       { source: '/admin/layanan', destination: '/admin/services', permanent: true },
       { source: '/admin/pesan', destination: '/admin/messages', permanent: true },
       { source: '/admin/laporan', destination: '/admin/reports', permanent: true },
+      // Halaman yang dihapus di redesign v2
+      { source: '/portfolio', destination: '/apparel', permanent: false },
+      { source: '/join-marketer', destination: '/', permanent: false },
+      { source: '/community', destination: '/', permanent: false },
       // Customer redirects
       { source: '/dashboard/pesan', destination: '/dashboard/messages', permanent: true },
     ]

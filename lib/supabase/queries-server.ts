@@ -1,6 +1,7 @@
 // This file is for SERVER-SIDE usage only
 // All functions here use the server client
 import { createClient } from "./server"
+import type { Invoice, Order, Profile, Service } from "./queries"
 
 // Re-export types
 export type {
@@ -24,7 +25,7 @@ export async function getServices() {
     .select("*")
     .order("created_at", { ascending: true })
   if (error) throw error
-  return data as any[]
+  return data as Service[]
 }
 
 // ============ ORDERS ============
@@ -40,7 +41,7 @@ export async function getOrders() {
     `)
     .order("created_at", { ascending: false })
   if (error) throw error
-  return data as any[]
+  return data as Order[]
 }
 
 // ============ INVOICES ============
@@ -57,7 +58,7 @@ export async function getInvoices() {
     `)
     .order("created_at", { ascending: false })
   if (error) throw error
-  return data as any[]
+  return data as Invoice[]
 }
 
 // ============ CUSTOMERS ============
@@ -70,7 +71,7 @@ export async function getCustomers() {
     .eq("role", "customer")
     .order("created_at", { ascending: false })
   if (error) throw error
-  return data as any[]
+  return data as Profile[]
 }
 
 // ============ DASHBOARD STATS ============

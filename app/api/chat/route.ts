@@ -1,3 +1,4 @@
+import { asCaughtError } from "@/lib/utils"
 import { NextResponse } from 'next/server'
 
 export const maxDuration = 30
@@ -166,7 +167,8 @@ export async function POST(request: Request) {
         signal: controller.signal,
       })
       clearTimeout(timeoutId)
-    } catch (error: any) {
+    } catch (err) {
+      const error = asCaughtError(err)
       console.error('Groq fetch error:', error?.message, error?.cause)
       return NextResponse.json(
         { message: 'Maaf, terjadi kesalahan. Coba lagi.' },
@@ -237,7 +239,8 @@ export async function POST(request: Request) {
       isDealRejected,
       dealData,
     })
-  } catch (error: any) {
+  } catch (err) {
+    const error = asCaughtError(err)
     console.error('Chat API error:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

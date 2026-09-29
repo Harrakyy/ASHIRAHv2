@@ -1,9 +1,8 @@
 "use client"
 
-import { HeroContainer } from "@/components/landing/hero/HeroContainer"
+import { HeroCarousel } from "@/components/landing/hero/HeroCarousel"
 
+/** Alias lama — hero sekarang memakai HeroCarousel (3 slide). */
 export function HeroSection() {
-  return <HeroContainer />
+  return <HeroCarousel />
 }
-
-export { HeroContainer }
