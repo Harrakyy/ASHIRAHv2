@@ -26,7 +26,7 @@ export function ApparelCTA() {
 
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
-            href="/order"
+            href={process.env.NEXT_PUBLIC_CANVAS_URL || "https://canvas.ashiragroup.id/ashira-apparel"}
             className="ashira-silver-gradient inline-flex w-full items-center justify-center gap-2.5 rounded-full px-[26px] py-4 text-base font-semibold text-ashira-navy shadow-[0_8px_24px_rgba(4,3,13,0.3)] transition-transform hover:scale-[1.02] sm:w-auto"
           >
             Minta Penawaran <ArrowRight className="h-4 w-4" />

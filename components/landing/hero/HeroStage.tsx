@@ -33,55 +33,12 @@ function StageEcosystem() {
 /* ------------------------------------------------------------------ */
 /* Slide 02 — mockup produk + pilihan bahan/warna + kartu harga        */
 /* ------------------------------------------------------------------ */
-const fabrics = ["Cotton Combed", "Drifit Tech", "Fleece"]
-const colors = [
-  { name: "Putih", value: "#FFFFFF" },
-  { name: "Hitam", value: "#1C1C1C" },
-  { name: "Navy", value: "#1C2143" },
-  { name: "Royal", value: "#2B2996" },
-  { name: "Abu", value: "#9CA3AF" },
-]
+
 
 function StageApparel() {
-  const rows = [
-    ["Harga per pcs", rupiah(85000)],
-    ["+ Logo", rupiah(15000)],
-    ["+ Teks", rupiah(5000)],
-  ]
   return (
     <div className="ashira-stage relative h-full w-full overflow-hidden rounded-[28px] lg:rounded-[36px]">
-      {/* Pilihan bahan */}
-      <div className="absolute inset-x-4 top-4 z-10 flex flex-wrap gap-1.5 sm:inset-x-6 sm:top-6 sm:gap-2" aria-label="Pilihan bahan">
-        {fabrics.map((fabric, i) => (
-          <span
-            key={fabric}
-            className={`rounded-full px-3 py-1.5 text-[11px] font-semibold sm:text-[13px] ${
-              i === 0
-                ? "bg-ashira-navy text-white shadow-[0_4px_12px_rgba(10,18,51,0.2)]"
-                : "bg-white/70 text-ashira-navy"
-            }`}
-          >
-            {fabric}
-          </span>
-        ))}
-      </div>
 
-      {/* Pilihan warna */}
-      <div
-        className="absolute left-4 top-1/2 z-10 flex -translate-y-1/2 flex-col gap-2.5 rounded-full bg-white/70 p-2 shadow-[0_6px_16px_rgba(10,18,51,0.12)] sm:left-6"
-        aria-label="Pilihan warna"
-      >
-        {colors.map((color, i) => (
-          <span
-            key={color.name}
-            title={color.name}
-            className={`block h-5 w-5 rounded-full border border-black/10 sm:h-6 sm:w-6 ${
-              i === 0 ? "ring-2 ring-ashira-royal ring-offset-2 ring-offset-white" : ""
-            }`}
-            style={{ backgroundColor: color.value }}
-          />
-        ))}
-      </div>
 
       {/* Mockup kaos */}
       <div className="absolute inset-x-14 bottom-[128px] top-14 flex items-center justify-center sm:bottom-24 sm:top-16 lg:bottom-20 lg:left-20 lg:right-10 xl:inset-x-16">
@@ -104,28 +61,7 @@ function StageApparel() {
         </div>
       </div>
 
-      {/* Kartu produk + rincian harga */}
-      <div className="absolute bottom-4 right-4 z-10 w-[200px] rounded-2xl bg-white/95 p-3.5 text-[12px] shadow-[0_10px_24px_rgba(10,18,51,0.18)] sm:bottom-6 sm:right-6 sm:w-[230px] sm:p-4 sm:text-[13px]">
-        <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-ashira-muted">01 / Produk Premium</p>
-        <p className="mt-0.5 text-[15px] font-bold text-ashira-navy sm:text-base">
-          {rupiah(85000)}
-          <span className="text-[12px] font-medium text-ashira-muted">/pcs</span>
-        </p>
-        <dl className="mt-2.5 hidden space-y-1.5 border-t border-ashira-navy/10 pt-2.5 sm:block">
-          {rows.map(([k, v]) => (
-            <div key={k} className="flex justify-between text-ashira-muted">
-              <dt>{k}</dt>
-              <dd className="font-semibold text-ashira-navy">{v}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="mt-2.5 flex items-baseline justify-between border-t border-ashira-navy/10 pt-2.5">
-          <span className="text-ashira-muted">
-            Subtotal<span className="sm:hidden"> (+logo, teks)</span>
-          </span>
-          <span className="text-base font-bold text-ashira-navy sm:text-[17px]">{rupiah(105000)}</span>
-        </div>
-      </div>
+
     </div>
   )
 }

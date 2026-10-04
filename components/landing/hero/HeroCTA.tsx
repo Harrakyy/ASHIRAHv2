@@ -33,7 +33,7 @@ export function HeroCTA({
       />
 
       {/* Right: motion.button CTA */}
-      <Link href="/order">
+      <Link href={process.env.NEXT_PUBLIC_CANVAS_URL || "https://canvas.ashiragroup.id/ashira-apparel"}>
         <motion.button
           type="button"
           whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}

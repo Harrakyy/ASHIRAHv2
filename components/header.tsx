@@ -3,12 +3,9 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Menu, X, ChevronDown, User, LogOut, LayoutDashboard } from "lucide-react"
-import { createClient } from "@/lib/supabase/client"
+import { Menu, X, ChevronDown } from "lucide-react"
 import { NavLink } from "@/components/nav-link"
 import { OrderTrigger } from "@/components/order-modal"
-import type { User as SupabaseUser } from "@supabase/supabase-js"
-
 // Language context for bilingual support
 type Language = "en" | "id"
 
@@ -98,14 +95,8 @@ const menuItem =
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [divisionsOpen, setDivisionsOpen] = useState(false)
-  const [accountOpen, setAccountOpen] = useState(false)
   const [language, setLanguage] = useState<Language>("en")
-  const [user, setUser] = useState<SupabaseUser | null>(null)
-  const router = useRouter()
-  const supabase = createClient()
   const divisionsRef = useRef<HTMLDivElement>(null)
-  const accountRef = useRef<HTMLDivElement>(null)
-
   const t = (key: string) => translations[language][key as keyof typeof translations.en] || key
 
   const navItems: NavItem[] = [
@@ -125,35 +116,16 @@ export function Header() {
     { label: t("contact"), href: "/#contact" },
   ]
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-      setUser(session?.user || null)
-    }
-    checkSession()
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setUser(session?.user || null)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [supabase])
 
   // Tutup dropdown saat klik di luar atau tekan Escape
   useEffect(() => {
     const onPointerDown = (e: PointerEvent) => {
       const target = e.target as Node
       if (divisionsRef.current && !divisionsRef.current.contains(target)) setDivisionsOpen(false)
-      if (accountRef.current && !accountRef.current.contains(target)) setAccountOpen(false)
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setDivisionsOpen(false)
-        setAccountOpen(false)
         setIsMobileMenuOpen(false)
       }
     }
@@ -179,13 +151,6 @@ export function Header() {
       desktop.removeEventListener("change", onChange)
     }
   }, [isMobileMenuOpen])
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
-    setAccountOpen(false)
-    router.push("/")
-  }
 
   const toggleLanguage = () => setLanguage(language === "en" ? "id" : "en")
   const closeMobile = () => setIsMobileMenuOpen(false)
@@ -277,35 +242,6 @@ export function Header() {
               {t("orderNow")}
             </OrderTrigger>
 
-            {user ? (
-              <div ref={accountRef} className="relative">
-                <button
-                  type="button"
-                  aria-label="Akun"
-                  aria-expanded={accountOpen}
-                  onClick={() => setAccountOpen((v) => !v)}
-                  className={iconButton}
-                >
-                  <User className="h-5 w-5" />
-                </button>
-                {accountOpen && (
-                  <div className="absolute right-0 top-full pt-3">
-                    <div className="w-48 rounded-2xl bg-white p-2 shadow-[0_16px_40px_rgba(10,18,51,0.18)]">
-                      <Link href="/admin" onClick={() => setAccountOpen(false)} className={menuItem}>
-                        <LayoutDashboard className="h-4 w-4" /> {t("dashboard")}
-                      </Link>
-                      <button type="button" onClick={handleLogout} className={menuItem}>
-                        <LogOut className="h-4 w-4" /> {t("logout")}
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link href="/login" aria-label={t("login")} className={iconButton}>
-                <User className="h-5 w-5" />
-              </Link>
-            )}
           </div>
 
           {/* Tombol menu mobile */}
@@ -369,38 +305,6 @@ export function Header() {
             >
               {t("orderNow")}
             </OrderTrigger>
-          </div>
-
-          <div className="mt-4 flex gap-3">
-            {user ? (
-              <>
-                <Link
-                  href="/admin"
-                  onClick={closeMobile}
-                  className="flex-1 rounded-full border border-white/30 py-3 text-center text-sm font-medium text-white"
-                >
-                  {t("dashboard")}
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleLogout()
-                    closeMobile()
-                  }}
-                  className="flex-1 rounded-full border border-white/30 py-3 text-sm font-medium text-white"
-                >
-                  {t("logout")}
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/login"
-                onClick={closeMobile}
-                className="flex-1 rounded-full border border-white/30 py-3 text-center text-sm font-medium text-white"
-              >
-                {t("login")}
-              </Link>
-            )}
           </div>
         </div>
       )}

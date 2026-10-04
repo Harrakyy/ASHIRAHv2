@@ -55,7 +55,7 @@ export function HeroMotionSection() {
               isReducedMotion={isReducedMotion}
             />
 
-            <Link href="/order" className="shrink-0">
+            <Link href={process.env.NEXT_PUBLIC_CANVAS_URL || "https://canvas.ashiragroup.id/ashira-apparel"} className="shrink-0">
               <motion.button
                 type="button"
                 whileHover={isReducedMotion ? undefined : { scale: 1.03 }}

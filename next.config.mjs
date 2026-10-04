@@ -1,22 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   images: {
-    unoptimized: true,
+    remotePatterns: [],
   },
   async redirects() {
     return [
-      // Admin redirects (Indonesian → English)
-      { source: '/admin/pelanggan', destination: '/admin/customers', permanent: true },
-      { source: '/admin/pesanan', destination: '/admin/orders', permanent: true },
-      { source: '/admin/layanan', destination: '/admin/services', permanent: true },
-      { source: '/admin/pesan', destination: '/admin/messages', permanent: true },
-      { source: '/admin/laporan', destination: '/admin/reports', permanent: true },
-      // Halaman yang dihapus di redesign v2
       { source: '/portfolio', destination: '/apparel', permanent: false },
       { source: '/join-marketer', destination: '/', permanent: false },
       { source: '/community', destination: '/', permanent: false },
-      // Customer redirects
-      { source: '/dashboard/pesan', destination: '/dashboard/messages', permanent: true },
+      // Redirect all order and tracking routes to Canvas
+      { source: '/order', destination: process.env.NEXT_PUBLIC_CANVAS_URL || 'https://canvas.ashiragroup.id/ashira-apparel', permanent: false },
+      { source: '/track/:path*', destination: process.env.NEXT_PUBLIC_CANVAS_URL || 'https://canvas.ashiragroup.id/ashira-apparel', permanent: false },
+      // Old routes cleanup
+      { source: '/admin/:path*', destination: '/', permanent: false },
+      { source: '/dashboard/:path*', destination: '/', permanent: false },
+      { source: '/login', destination: '/', permanent: false },
     ]
   },
 }

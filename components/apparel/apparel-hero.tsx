@@ -36,7 +36,7 @@ export function ApparelHero() {
 
             <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
               <Link
-                href="/order"
+                href={process.env.NEXT_PUBLIC_CANVAS_URL || "https://canvas.ashiragroup.id/ashira-apparel"}
                 className="ashira-silver-gradient inline-flex items-center justify-center gap-2.5 rounded-full px-[26px] py-3.5 text-[15px] font-semibold text-ashira-navy shadow-[0_8px_24px_rgba(4,3,13,0.3)] transition-transform hover:scale-[1.02] sm:text-base"
               >
                 Minta Penawaran <ArrowRight className="h-4 w-4" />

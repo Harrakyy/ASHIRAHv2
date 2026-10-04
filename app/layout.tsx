@@ -1,10 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans, Outfit, Playfair_Display } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import Chatbot from "@/components/Chatbot"
 import { ThemeProvider } from "@/components/theme-provider"
-import { AuthProvider } from "@/contexts/auth-context"
+import Chatbot from "@/components/Chatbot"
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -32,18 +30,9 @@ export const metadata: Metadata = {
   description: 'ASHIRA Group (PT Ashira Niaga Indonesia) adalah holding company yang membawahi ASHIRATECH — software, SaaS & AI — dan ASHIRA Apparel — produksi garmen dan apparel custom.',
   icons: {
     icon: [
-      {
-        url: '/iconAH.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/iconAHLG.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/iconAH.svg',
-        type: 'image/svg+xml',
-      },
+      { url: '/iconAH.png', media: '(prefers-color-scheme: light)' },
+      { url: '/iconAHLG.png', media: '(prefers-color-scheme: dark)' },
+      { url: '/iconAH.svg', type: 'image/svg+xml' },
     ],
     apple: '/iconAH.png',
   },
@@ -63,13 +52,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
-            {children}
-            <Chatbot />
-            <Analytics />
-          </AuthProvider>
+          {children}
+          <Chatbot />
         </ThemeProvider>
       </body>
     </html>
   )
-}
+}
