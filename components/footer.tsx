@@ -17,7 +17,7 @@ export function Footer() {
           </div>
           <div className="flex gap-3 flex-wrap">
             <a
-              href="mailto:corporate@ashiragroup.id"
+              href="mailto:business.ashira@gmail.com"
               className="px-5.5 py-3 rounded-full font-semibold border-[1.5px] border-white bg-white text-[#12113a] hover:bg-[#b9bce0] transition-colors duration-200"
             >
               Buat janji temu
@@ -40,7 +40,7 @@ export function Footer() {
             ASHIRA <span className="font-normal">Group</span>
           </b>
           <p className="text-[#b9bce0] mt-3 mb-4.5 max-w-[34ch]">
-            Holding company yang menaungi bisnis apparel dan teknologi, berbasis di Science Techno Park Universitas Indonesia.
+            Holding company yang membawahi dua subholding: ASHIRATECH di bidang teknologi &amp; AI, dan ASHIRA Apparel di bidang garmen dan produksi apparel custom.
           </p>
           <div className="italic text-white text-[13px] max-w-[30ch]">
             Do <strong className="font-bold">Progressive</strong>, Think <strong className="font-bold">Transformative</strong>, Act <strong className="font-bold">Collaborative</strong>
@@ -66,14 +66,14 @@ export function Footer() {
           <ul className="m-0 p-0 list-none space-y-2">
             <li>
               <Link href="/apparel" className="text-[#b9bce0] hover:text-white transition-colors duration-200 group">
-                PT Ashira Swarna Apparel
-                <small className="block text-[#b9bce0] opacity-75 text-xs leading-[1.4] mt-0.5 group-hover:text-white group-hover:opacity-100 transition-colors">Produksi dan layanan apparel</small>
+                ASHIRA Apparel
+                <small className="block text-[#b9bce0] opacity-75 text-xs leading-[1.4] mt-0.5 group-hover:text-white group-hover:opacity-100 transition-colors">Garmen dan produksi apparel custom</small>
               </Link>
             </li>
             <li>
               <Link href="/#tech" className="text-[#b9bce0] hover:text-white transition-colors duration-200 group">
-                PT Ashira Technology
-                <small className="block text-[#b9bce0] opacity-75 text-xs leading-[1.4] mt-0.5 group-hover:text-white group-hover:opacity-100 transition-colors">Solusi teknologi dan digital</small>
+                ASHIRATECH
+                <small className="block text-[#b9bce0] opacity-75 text-xs leading-[1.4] mt-0.5 group-hover:text-white group-hover:opacity-100 transition-colors">Teknologi dan AI</small>
               </Link>
             </li>
           </ul>
@@ -83,8 +83,11 @@ export function Footer() {
         <div className="contact">
           <h3 className="m-0 mb-3.5 text-[15px] font-semibold">Hubungi kami</h3>
           <dl className="m-0">
-            <dt className="font-semibold mt-3">Alamat</dt>
-            <dd className="m-0 text-[#b9bce0]">Science Techno Park Universitas Indonesia Building Office, Kampus UI, Depok, Jawa Barat, Indonesia</dd>
+            <dt className="font-semibold mt-3">ASHIRA Group HQ</dt>
+            <dd className="m-0 text-[#b9bce0]">Treasury Tower Building Lantai 19, SCBD, Jakarta Selatan</dd>
+            
+            <dt className="font-semibold mt-3">Kantor ASHIRATECH &amp; ASHIRA Apparel</dt>
+            <dd className="m-0 text-[#b9bce0]">Ruko Campton Blok B No. 8, Jalan Raya Cisauk, Sampora, BSD, Tangerang</dd>
             
             <dt className="font-semibold mt-3">Telepon / WhatsApp</dt>
             <dd className="m-0 text-[#b9bce0] flex flex-col sm:flex-row sm:items-center">
@@ -92,7 +95,7 @@ export function Footer() {
               <a href="tel:+628194445006" className="hover:text-white transition-colors duration-200">+62 819 4445 5006</a>
             </dd>
             <dd className="m-0 text-[#b9bce0] flex flex-col sm:flex-row sm:items-center">
-              <span className="inline-block min-w-[118px]">Ashira Swarna Apparel</span>
+              <span className="inline-block min-w-[118px]">ASHIRA Apparel</span>
               <a href="tel:+628118880557" className="hover:text-white transition-colors duration-200">+62 811 8880 557</a>
             </dd>
             <dd className="m-0 text-[#b9bce0] flex flex-col sm:flex-row sm:items-center">
@@ -101,9 +104,17 @@ export function Footer() {
             </dd>
             
             <dt className="font-semibold mt-3">Email</dt>
-            <dd className="m-0 text-[#b9bce0]">
-              <a href="mailto:corporate@ashiragroup.id" className="hover:text-white transition-colors duration-200 block">corporate@ashiragroup.id</a>
-              <a href="mailto:ashira.hmco@gmail.com" className="hover:text-white transition-colors duration-200 block mt-0.5">ashira.hmco@gmail.com</a>
+            <dd className="m-0 text-[#b9bce0] flex flex-col sm:flex-row sm:items-center">
+              <span className="inline-block min-w-[118px]">ASHIRA Group HQ</span>
+              <a href="mailto:business.ashira@gmail.com" className="hover:text-white transition-colors duration-200 block">business.ashira@gmail.com</a>
+            </dd>
+            <dd className="m-0 text-[#b9bce0] flex flex-col sm:flex-row sm:items-center mt-0.5">
+              <span className="inline-block min-w-[118px]">ASHIRATECH</span>
+              <a href="mailto:ashira.technology@gmail.com" className="hover:text-white transition-colors duration-200 block">ashira.technology@gmail.com</a>
+            </dd>
+            <dd className="m-0 text-[#b9bce0] flex flex-col sm:flex-row sm:items-center mt-0.5">
+              <span className="inline-block min-w-[118px]">ASHIRA Apparel</span>
+              <a href="mailto:ashira.apparel@gmail.com" className="hover:text-white transition-colors duration-200 block">ashira.apparel@gmail.com</a>
             </dd>
           </dl>
           
