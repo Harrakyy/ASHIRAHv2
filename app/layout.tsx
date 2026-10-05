@@ -26,8 +26,18 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ashiragroup.id'),
   title: 'ASHIRA Group | Holding Company Teknologi & Fashion',
   description: 'ASHIRA Group (PT Ashira Niaga Indonesia) adalah holding company yang membawahi ASHIRATECH — software, SaaS & AI — dan ASHIRA Apparel — produksi garmen dan apparel custom.',
+  keywords: ['ashira', 'ashiragroup', 'ashira group', 'ashiratech', 'ashira apparel', 'holding company', 'software', 'garmen', 'apparel custom', 'AI'],
+  openGraph: {
+    title: 'ASHIRA Group | Holding Company Teknologi & Fashion',
+    description: 'ASHIRA Group (PT Ashira Niaga Indonesia) adalah holding company yang membawahi ASHIRATECH — software, SaaS & AI — dan ASHIRA Apparel — produksi garmen dan apparel custom.',
+    url: 'https://ashiragroup.id',
+    siteName: 'ASHIRA Group',
+    locale: 'id_ID',
+    type: 'website',
+  },
   icons: {
     icon: [
       { url: '/iconAH.png', media: '(prefers-color-scheme: light)' },
