@@ -52,10 +52,7 @@ export function Footer() {
           <h3 className="m-0 mb-3.5 text-[15px] font-semibold">Jelajahi</h3>
           <ul className="m-0 p-0 list-none space-y-2">
             <li><Link href="/" className="text-[#b9bce0] hover:text-white transition-colors duration-200">Beranda</Link></li>
-            <li><Link href="/#about" className="text-[#b9bce0] hover:text-white transition-colors duration-200">Tentang Kami</Link></li>
-            <li><Link href="/#services" className="text-[#b9bce0] hover:text-white transition-colors duration-200">Layanan</Link></li>
-            <li><Link href="/#news" className="text-[#b9bce0] hover:text-white transition-colors duration-200">Berita &amp; Kegiatan</Link></li>
-            <li><Link href="/#careers" className="text-[#b9bce0] hover:text-white transition-colors duration-200">Karier</Link></li>
+            <li><Link href="/about" className="text-[#b9bce0] hover:text-white transition-colors duration-200">Tentang Kami</Link></li>
             <li><Link href="/#contact" className="text-[#b9bce0] hover:text-white transition-colors duration-200">Hubungi Kami</Link></li>
           </ul>
         </nav>

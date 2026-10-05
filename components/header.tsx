@@ -101,7 +101,7 @@ export function Header() {
 
   const navItems: NavItem[] = [
     { label: t("home"), href: "/" },
-    { label: t("about"), href: "/#about" },
+    { label: t("about"), href: "/about" },
     // Team ada di navbar Figma Redesign v2 (keputusan user, menggantikan susunan HANDOVER)
     { label: t("team"), href: "/team" },
     {

@@ -27,7 +27,7 @@ export const incubator: TeamMember = {
 export const ceo: TeamMember = {
   name: "Hawari Muttaqin Mafaza",
   role: "Chief Executive Officer",
-  photo: "/images/FOTO HAWARI.png",
+  photo: "/images/team/hawari-muttaqin-mafaza.png",
 }
 
 export const ceoOffice: TeamMember = {
@@ -37,10 +37,10 @@ export const ceoOffice: TeamMember = {
 }
 
 export const heads: TeamMember[] = [
-  { name: "Safitri Az Zahra", role: "Head of Finance", photo: "/images/FOTO SAFI.png" },
-  { name: "Muhammad Rahadian Dzaki", role: "Chief Technology Officer", photo: "/images/FOTO DZAKI.png" },
-  { name: "Adithia Maulana", role: "Chief Strategic Officer", photo: "/images/FOTO ADIT.png" },
-  { name: "Resky Amalia Putri", role: "Head of Marcomm", photo: "/images/FOTO AMEL.png" },
+  { name: "Safitri Az Zahra", role: "Head of Finance", photo: "/images/team/safitri-az-zahra.png" },
+  { name: "Muhammad Rahadian Dzaki", role: "Chief Technology Officer", photo: "/images/team/muhammad-rahadian-dzaki.png" },
+  { name: "Adithia Maulana", role: "Chief Strategic Officer", photo: "/images/team/adithia-maulana.png" },
+  { name: "Resky Amalia Putri", role: "Head of Marcomm", photo: "/images/team/resky-amalia-putri.png" },
 ]
 
 export const staff: TeamMember[] = [
