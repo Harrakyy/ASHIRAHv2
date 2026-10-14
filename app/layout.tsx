@@ -3,6 +3,9 @@ import { Inter, Plus_Jakarta_Sans, Outfit, Playfair_Display } from 'next/font/go
 import './globals.css'
 import { ThemeProvider } from "@/components/theme-provider"
 import Chatbot from "@/components/Chatbot"
+import { GoogleAnalytics } from "@next/third-parties/google"
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-NKEW5LZBDD"
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -66,6 +69,7 @@ export default function RootLayout({
           <Chatbot />
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId={GA_ID} />
     </html>
   )
 }
